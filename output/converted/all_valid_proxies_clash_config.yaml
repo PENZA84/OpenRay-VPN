@@ -690,19 +690,6 @@ proxies:
     path: /proxyip=ProxyIP.SG.CMLiussss.net
     headers:
       Host: bp.suoni.nyc.mn
-- name: OpenRay  DE-2551
-  type: vless
-  server: 136.243.79.227
-  port: 443
-  uuid: af58af9a-cee1-4d3c-8460-674d9c1320ca
-  network: tcp
-  flow: xtls-rprx-vision
-  tls: true
-  servername: hls-svod.itunes.apple.com
-  reality-opts:
-    public-key: mLmBhbVFfNuo2eUgBh6r9-5Koz9mUCn3aSzlR6IejUg
-    short-id: 48720c
-  client-fingerprint: chrome
 - name: OpenRay  DE-2552
   type: vless
   server: 128.140.14.218
@@ -912,6 +899,16 @@ proxies:
     path: /telegeam-@v2_city--?ed=2048
     headers:
       Host: mojhsjd.global.ssl.fastly.net
+- name: OpenRay  US-9723
+  type: vless
+  server: 151.101.169.242
+  port: 80
+  uuid: 36d36db1-19e0-4849-8816-c977a139274e
+  network: ws
+  ws-opts:
+    path: /telegeam-@v2_city--?ed=2048
+    headers:
+      Host: mojhsjd.global.ssl.fastly.net
 - name: OpenRay  FR-2030
   type: vless
   server: 638982038145570100.prague-drcn-aaaai.info
@@ -931,19 +928,6 @@ proxies:
   uuid: df0680ca-e43c-498d-ed86-8e196eedd012
   network: grpc
 - name: OpenRay  FR-2059
-  type: vmess
-  server: 5.196.29.123
-  port: 2082
-  uuid: 112ac36f-3f53-4e26-8371-d25c028e1b9a
-  alterId: 0
-  cipher: auto
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: 
-        wrmelmwxlf.gktevlrqznwqqozy.fabpfs66gizmnojhcvqxwl.kytrcfzqla87gvgvs6c7kjnrubuh.cc
-- name: OpenRay  FR-2060
   type: vmess
   server: 5.196.29.123
   port: 2082
@@ -1108,6 +1092,28 @@ proxies:
       Telegramjoin:@V2Ray_Rolly-Telegramjoin:@V2Ray_Rolly-Telegramjoin:@V2Ray_Rolly-Telegramjoin:@V2Ray_Rolly-Telegramjoin:@V2Ray_Rolly-Telegramjoin:@V2Ray_Rolly-Telegramjoin:@V2Ray_Rolly-Telegramjoin:@V2Ray_Rolly-Telegramjoin:@V2Ray_Rolly-Telegramjoin:@V2Ray_Rolly-Telegramjoin:@V2Ray_Rolly-
     headers:
       Host: fggvggvvvv.fggghbvhh-ghvghggg-fgvg-mahdi-net-irancel.BLOG
+- name: OpenRay  SE-2643
+  type: vless
+  server: 194.104.94.7
+  port: 443
+  uuid: Chanel---V2RAYNGCLOUD---
+  network: grpc
+  tls: true
+  servername: docker.com
+  reality-opts:
+    public-key: vo3IPWJCrDQ3fnrQ8zzh40xRM2vy-9w30UuiHLjZbn4
+    short-id: ''
+  client-fingerprint: firefox
+- name: OpenRay  SE-2644
+  type: vless
+  server: 199.232.173.242
+  port: 80
+  uuid: b9c20ba9-da82-4082-a97a-977b4fbed67b
+  network: ws
+  ws-opts:
+    path: /
+    headers:
+      Host: greencp3.global.ssl.fastly.net
 - name: OpenRay  AT-1
   type: vless
   server: 38.180.144.156
@@ -1345,6 +1351,30 @@ proxies:
     path: /vmess/
     headers:
       Host: 95.164.4.88
+- name: OpenRay  BR-19
+  type: vmess
+  server: 95.164.4.88
+  port: 80
+  uuid: c04c3b34-70fd-4fec-963e-c12d09f36bef
+  alterId: 0
+  cipher: auto
+  network: ws
+  ws-opts:
+    path: /vmess/
+    headers:
+      Host: pq-brazil1.09vpn.com
+- name: OpenRay  BR-20
+  type: vmess
+  server: 95.164.4.88
+  port: 80
+  uuid: c04c3b34-70fd-4fec-963e-c12d09f36bef
+  alterId: 0
+  cipher: auto
+  network: ws
+  ws-opts:
+    path: /vmess/
+    headers:
+      Host: 95.164.4.88
 - name: OpenRay  IE-1
   type: vless
   server: 199.232.25.242
@@ -1391,6 +1421,19 @@ proxies:
     path: /telegeam-@v2_city--?ed=2048
     headers:
       Host: mojhsjd.global.ssl.fastly.net
+- name: OpenRay  KZ-1
+  type: vless
+  server: 194.32.142.55
+  port: 443
+  uuid: af58af9a-cee1-4d3c-8460-674d9c1320ca
+  network: tcp
+  flow: xtls-rprx-vision
+  tls: true
+  servername: hls-svod.itunes.apple.com
+  reality-opts:
+    public-key: mLmBhbVFfNuo2eUgBh6r9-5Koz9mUCn3aSzlR6IejUg
+    short-id: f79448a30d
+  client-fingerprint: chrome
 
 proxy-groups:
 - name: AUTO
@@ -1452,7 +1495,6 @@ proxy-groups:
   - OpenRay Dynamic-7845
   - OpenRay Dynamic-1
   - OpenRay  DE-1889
-  - OpenRay  DE-2551
   - OpenRay  DE-2552
   - OpenRay  DE-2553
   - OpenRay  US-2325
@@ -1478,11 +1520,11 @@ proxy-groups:
   - OpenRay  US-9710
   - OpenRay  US-9713
   - OpenRay  US-9722
+  - OpenRay  US-9723
   - OpenRay  FR-2030
   - OpenRay  FR-2056
   - OpenRay  FR-2058
   - OpenRay  FR-2059
-  - OpenRay  FR-2060
   - OpenRay  GB-981
   - OpenRay  GB-985
   - OpenRay  GB-986
@@ -1498,6 +1540,8 @@ proxy-groups:
   - OpenRay  SE-2640
   - OpenRay  SE-2641
   - OpenRay  SE-2642
+  - OpenRay  SE-2643
+  - OpenRay  SE-2644
   - OpenRay  AT-1
   - OpenRay  RU-44
   - OpenRay  RU-50
@@ -1517,10 +1561,13 @@ proxy-groups:
   - OpenRay  BR-16
   - OpenRay  BR-17
   - OpenRay  BR-18
+  - OpenRay  BR-19
+  - OpenRay  BR-20
   - OpenRay  IE-1
   - OpenRay  LV-1
   - OpenRay  NL-4
   - OpenRay  IT-1
+  - OpenRay  KZ-1
 - name: PROXY
   type: select
   proxies:
@@ -1578,7 +1625,6 @@ proxy-groups:
   - OpenRay Dynamic-7845
   - OpenRay Dynamic-1
   - OpenRay  DE-1889
-  - OpenRay  DE-2551
   - OpenRay  DE-2552
   - OpenRay  DE-2553
   - OpenRay  US-2325
@@ -1604,11 +1650,11 @@ proxy-groups:
   - OpenRay  US-9710
   - OpenRay  US-9713
   - OpenRay  US-9722
+  - OpenRay  US-9723
   - OpenRay  FR-2030
   - OpenRay  FR-2056
   - OpenRay  FR-2058
   - OpenRay  FR-2059
-  - OpenRay  FR-2060
   - OpenRay  GB-981
   - OpenRay  GB-985
   - OpenRay  GB-986
@@ -1624,6 +1670,8 @@ proxy-groups:
   - OpenRay  SE-2640
   - OpenRay  SE-2641
   - OpenRay  SE-2642
+  - OpenRay  SE-2643
+  - OpenRay  SE-2644
   - OpenRay  AT-1
   - OpenRay  RU-44
   - OpenRay  RU-50
@@ -1643,10 +1691,13 @@ proxy-groups:
   - OpenRay  BR-16
   - OpenRay  BR-17
   - OpenRay  BR-18
+  - OpenRay  BR-19
+  - OpenRay  BR-20
   - OpenRay  IE-1
   - OpenRay  LV-1
   - OpenRay  NL-4
   - OpenRay  IT-1
+  - OpenRay  KZ-1
 rules:
 - DOMAIN-SUFFIX,ir,DIRECT
 - DOMAIN-SUFFIX,aparat.com,DIRECT
