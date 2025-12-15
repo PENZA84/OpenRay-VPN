@@ -255,16 +255,6 @@ proxies:
     path: /ws
     headers:
       Host: rAyAn-cOnFiG-ca-1.pAriSa.dPdNs.oRg
-- name: OpenRay  CA-7924
-  type: vless
-  server: 172.67.207.26
-  port: 8080
-  uuid: 4c9541c7-5fa1-403c-84af-175e3b25a27f
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: 201.58vtg99l.workers.dev
 - name: OpenRay  CA-7925
   type: vless
   server: 104.18.14.19
@@ -275,26 +265,6 @@ proxies:
     path: /?ed=2560
     headers:
       Host: 0213.nsbt5eve.workers.dev
-- name: OpenRay  CA-7934
-  type: vless
-  server: 104.18.13.229
-  port: 2052
-  uuid: cdec8542-a21f-4377-9da3-ea60bb6d3a30
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: chosenflyesqt-q3y28ipf-v2.chosen-fly-esqt.workers.dev
-- name: OpenRay  CA-7935
-  type: vless
-  server: 104.18.12.229
-  port: 2052
-  uuid: cdec8542-a21f-4377-9da3-ea60bb6d3a30
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: chosenflyesqt-q3y28ipf-v2.chosen-fly-esqt.workers.dev
 - name: OpenRay  CA-7939
   type: vless
   server: 104.17.147.22
@@ -321,16 +291,6 @@ proxies:
       /tr----EXPRESSVPN_420---Join----EXPRESSVPN_420---Join---EXPRESSVPN_420---Join----EXPRESSVPN_420---Join---EXPRESSVPN_420/
     headers:
       Host: spring-dream-2210.votapi4213.workers.dev
-- name: OpenRay  CA-7945
-  type: vless
-  server: 104.21.15.212
-  port: 8080
-  uuid: 4c9541c7-5fa1-403c-84af-175e3b25a27f
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: 201.58vtg99l.workers.dev
 - name: OpenRay  CA-7951
   type: vless
   server: 104.17.148.22
@@ -887,28 +847,6 @@ proxies:
     path: /%3Fed%3D2560
     headers:
       Host: parking-nfchbwa1-v2.parking-1ab.workers.dev
-- name: OpenRay Dynamic-7947
-  type: vless
-  server: 1password.com
-  port: 443
-  uuid: d2d0f796-edb0-427a-af32-ae360679f9e7
-  network: ws
-  tls: true
-  servername: rAyAn-007.fOtOn.dPdNs.oRg
-  ws-opts:
-    path: /?ed=2560
-    headers:
-      Host: rayan-007.foton.dpdns.org
-- name: OpenRay Dynamic-7948
-  type: vless
-  server: www.visa.com.sg
-  port: 2052
-  uuid: 363a6072-05d7-48d5-8f19-312b05fdd9cd
-  network: ws
-  ws-opts:
-    path: /?ed=2560
-    headers:
-      Host: chosenflyesqt-q3y28ipf-v3.chosen-fly-esqt.workers.dev
 - name: OpenRay Dynamic-7954
   type: vmess
   server: yg1.ygkkk.dpdns.org
@@ -1283,31 +1221,6 @@ proxies:
   port: 4655
   uuid: 82f9beee-a609-47f2-9142-14c25258dc0b
   network: tcp
-- name: OpenRay  FR-2058
-  type: vmess
-  server: 5.196.29.123
-  port: 2082
-  uuid: 112ac36f-3f53-4e26-8371-d25c028e1b9a
-  alterId: 0
-  cipher: auto
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: google.com
-- name: OpenRay  FR-2059
-  type: vmess
-  server: 5.196.29.123
-  port: 2082
-  uuid: 112ac36f-3f53-4e26-8371-d25c028e1b9a
-  alterId: 0
-  cipher: auto
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: 
-        wrmelmwxlf.gktevlrqznwqqozy.fabpfs66gizmnojhcvqxwl.kytrcfzqla87gvgvs6c7kjnrubuh.cc
 - name: OpenRay  GB-981
   type: vless
   server: 194.46.59.171
@@ -1755,6 +1668,43 @@ proxies:
     path: /vmess/
     headers:
       Host: pq-brazil1.09vpn.com
+- name: OpenRay  BR-4
+  type: vmess
+  server: 95.164.4.88
+  port: 80
+  uuid: c04c3b34-70fd-4fec-963e-c12d09f36bef
+  alterId: 0
+  cipher: auto
+  network: ws
+  ws-opts:
+    path: /vmess/
+    headers:
+      Host: pq-brazil1.09vpn.com
+- name: OpenRay  BR-5
+  type: vmess
+  server: 95.164.4.88
+  port: 80
+  uuid: c04c3b34-70fd-4fec-963e-c12d09f36bef
+  alterId: 0
+  cipher: auto
+  network: ws
+  ws-opts:
+    path: /vmess/
+    headers:
+      Host: 95.164.4.88
+- name: OpenRay  IL-1
+  type: vless
+  server: 20.217.83.254
+  port: 443
+  uuid: 0e8a6896-ad90-4a3b-89a3-77d64aa409e2
+  network: tcp
+  flow: xtls-rprx-vision
+  tls: true
+  servername: i2pd.website
+  reality-opts:
+    public-key: YVDo7U4O-AT2fa5H9E7hyYHKgfZd1vB6UdbAf2ggWQE
+    short-id: 55e6af1a35e64a98
+  client-fingerprint: chrome
 
 proxy-groups:
 - name: AUTO
@@ -1778,13 +1728,9 @@ proxy-groups:
   - OpenRay  CA-7909
   - OpenRay  CA-7911
   - OpenRay  CA-7912
-  - OpenRay  CA-7924
   - OpenRay  CA-7925
-  - OpenRay  CA-7934
-  - OpenRay  CA-7935
   - OpenRay  CA-7939
   - OpenRay  CA-7940
-  - OpenRay  CA-7945
   - OpenRay  CA-7951
   - OpenRay  CA-7953
   - OpenRay Dynamic-95
@@ -1832,8 +1778,6 @@ proxy-groups:
   - OpenRay Dynamic-7927
   - OpenRay Dynamic-7941
   - OpenRay Dynamic-7943
-  - OpenRay Dynamic-7947
-  - OpenRay Dynamic-7948
   - OpenRay Dynamic-7954
   - OpenRay Dynamic-7952
   - 'OpenRay Dynamic-7954 #2'
@@ -1873,8 +1817,6 @@ proxy-groups:
   - OpenRay  US-9756
   - OpenRay  FR-2056
   - OpenRay  FR-2057
-  - OpenRay  FR-2058
-  - OpenRay  FR-2059
   - OpenRay  GB-981
   - OpenRay  GB-985
   - OpenRay  GB-986
@@ -1912,6 +1854,9 @@ proxy-groups:
   - OpenRay  BR-1
   - OpenRay  BR-2
   - OpenRay  BR-3
+  - OpenRay  BR-4
+  - OpenRay  BR-5
+  - OpenRay  IL-1
 - name: PROXY
   type: select
   proxies:
@@ -1931,13 +1876,9 @@ proxy-groups:
   - OpenRay  CA-7909
   - OpenRay  CA-7911
   - OpenRay  CA-7912
-  - OpenRay  CA-7924
   - OpenRay  CA-7925
-  - OpenRay  CA-7934
-  - OpenRay  CA-7935
   - OpenRay  CA-7939
   - OpenRay  CA-7940
-  - OpenRay  CA-7945
   - OpenRay  CA-7951
   - OpenRay  CA-7953
   - OpenRay Dynamic-95
@@ -1985,8 +1926,6 @@ proxy-groups:
   - OpenRay Dynamic-7927
   - OpenRay Dynamic-7941
   - OpenRay Dynamic-7943
-  - OpenRay Dynamic-7947
-  - OpenRay Dynamic-7948
   - OpenRay Dynamic-7954
   - OpenRay Dynamic-7952
   - 'OpenRay Dynamic-7954 #2'
@@ -2026,8 +1965,6 @@ proxy-groups:
   - OpenRay  US-9756
   - OpenRay  FR-2056
   - OpenRay  FR-2057
-  - OpenRay  FR-2058
-  - OpenRay  FR-2059
   - OpenRay  GB-981
   - OpenRay  GB-985
   - OpenRay  GB-986
@@ -2065,6 +2002,9 @@ proxy-groups:
   - OpenRay  BR-1
   - OpenRay  BR-2
   - OpenRay  BR-3
+  - OpenRay  BR-4
+  - OpenRay  BR-5
+  - OpenRay  IL-1
 rules:
 - DOMAIN-SUFFIX,ir,DIRECT
 - DOMAIN-SUFFIX,aparat.com,DIRECT
