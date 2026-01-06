@@ -614,7 +614,20 @@ def main() -> int:
             # Merge: replace subset portion with validated ones
             available_to_add = kept_subset + available_to_add[len(subset):]
 
-    # Deduplicate against existing available file and write (custom OpenRay dedup rules)
+    # First, deduplicate within the new proxy list itself (custom OpenRay dedup rules)
+    seen_new_keys: Set[str] = set()
+    deduplicated_new: List[str] = []
+    for u in available_to_add:
+        conn_key = get_openray_dedup_key(u)
+        if conn_key not in seen_new_keys:
+            seen_new_keys.add(conn_key)
+            deduplicated_new.append(u)
+    
+    if len(deduplicated_new) != len(available_to_add):
+        log(f"Deduplicated new proxies: {len(deduplicated_new)} unique out of {len(available_to_add)} total")
+    available_to_add = deduplicated_new
+
+    # Then, deduplicate against existing available file and write (custom OpenRay dedup rules)
     new_available_unique: List[str] = []
     existing_connection_keys = {get_openray_dedup_key(u) for u in existing_available}
     for u in available_to_add:
