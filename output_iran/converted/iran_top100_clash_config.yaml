@@ -117,9 +117,9 @@ proxies:
   port: 48129
   uuid: b338a8f4-9aa3-4e1d-b6b7-5efed8ae038b
   network: raw
-- name: OpenRay  US-9817
+- name: OpenRay  US-9814
   type: vless
-  server: 15.204.97.159
+  server: 15.204.97.148
   port: 23576
   uuid: 48ff2b70-e180-582f-8866-d9a2edeed5f5
   network: tcp
@@ -130,9 +130,9 @@ proxies:
     public-key: 1y5h2FGWKXTJ9xLPCqPo6Mw7RxoZzh6fGkEQKNxpZ3s
     short-id: '01'
   client-fingerprint: chrome
-- name: OpenRay  US-9814
+- name: OpenRay  US-9817
   type: vless
-  server: 15.204.97.148
+  server: 15.204.97.159
   port: 23576
   uuid: 48ff2b70-e180-582f-8866-d9a2edeed5f5
   network: tcp
@@ -205,9 +205,9 @@ proxies:
     path: /
     headers:
       Host: EMotioNaL-peRMIsSiONf1bs65u5f4.EcOTOuRISs.Co.uK
-- name: OpenRay  CA-9644
+- name: OpenRay  CA-9645
   type: vless
-  server: 104.18.27.48
+  server: 104.18.26.48
   port: 80
   uuid: c5b129d7-f133-4b34-a9c6-68c9a8f70248
   network: ws
@@ -215,9 +215,9 @@ proxies:
     path: /
     headers:
       Host: EMotioNaL-peRMIsSiONf1bs65u5f4.EcOTOuRISs.Co.uK
-- name: OpenRay  CA-9645
+- name: OpenRay  CA-9644
   type: vless
-  server: 104.18.26.48
+  server: 104.18.27.48
   port: 80
   uuid: c5b129d7-f133-4b34-a9c6-68c9a8f70248
   network: ws
@@ -326,9 +326,9 @@ proxies:
     public-key: 1y5h2FGWKXTJ9xLPCqPo6Mw7RxoZzh6fGkEQKNxpZ3s
     short-id: '01'
   client-fingerprint: chrome
-- name: OpenRay  US-9824
+- name: OpenRay  US-9821
   type: vless
-  server: 15.204.97.214
+  server: 15.204.97.149
   port: 23576
   uuid: 48ff2b70-e180-582f-8866-d9a2edeed5f5
   network: tcp
@@ -339,9 +339,9 @@ proxies:
     public-key: 1y5h2FGWKXTJ9xLPCqPo6Mw7RxoZzh6fGkEQKNxpZ3s
     short-id: '01'
   client-fingerprint: chrome
-- name: OpenRay  US-9821
+- name: OpenRay  US-9824
   type: vless
-  server: 15.204.97.149
+  server: 15.204.97.214
   port: 23576
   uuid: 48ff2b70-e180-582f-8866-d9a2edeed5f5
   network: tcp
@@ -595,18 +595,6 @@ proxies:
     path: /119.201.165.50:50001
     headers:
       Host: floralwhite.qzz.io
-- name: OpenRay Dynamic-10143
-  type: vless
-  server: cdnjs.com
-  port: 443
-  uuid: 67cf43da-d94c-4d93-b073-ac9305b16ec3
-  network: ws
-  tls: true
-  servername: rAyAn-cOnFiG-ca-1.pArSa.dPdNs.oRg
-  ws-opts:
-    path: /ws
-    headers:
-      Host: rAyAn-cOnFiG-ca-1.pArSa.dPdNs.oRg
 - name: OpenRay  US-10579
   type: vless
   server: 15.204.97.177
@@ -632,18 +620,18 @@ proxies:
     public-key: cDaDzPr3PlS3NM8lreHZbdo-Mhqz8vMBzMSkHXhGIUA
     short-id: e8ab71d0
   client-fingerprint: chrome
-- name: OpenRay  CA-10260
+- name: OpenRay Dynamic-10143
   type: vless
-  server: 104.24.197.20
+  server: cdnjs.com
   port: 443
   uuid: 67cf43da-d94c-4d93-b073-ac9305b16ec3
   network: ws
   tls: true
-  servername: rAyAn-cOnFiG-ca-1.pAriSa.dPdNs.oRg
+  servername: rAyAn-cOnFiG-ca-1.pArSa.dPdNs.oRg
   ws-opts:
     path: /ws
     headers:
-      Host: rAyAn-cOnFiG-ca-1.pAriSa.dPdNs.oRg
+      Host: rAyAn-cOnFiG-ca-1.pArSa.dPdNs.oRg
 - name: OpenRay  CA-10259
   type: vless
   server: 104.24.196.20
@@ -656,6 +644,20 @@ proxies:
     path: /ws
     headers:
       Host: rAyAn-cOnFiG-ca-1.pAriSa.dPdNs.oRg
+- name: OpenRay  JP-343
+  type: vmess
+  server: n1753598445.74qxv.top
+  port: 443
+  uuid: f53b95dc-3ec3-49a2-803a-510e614ae577
+  alterId: 0
+  cipher: auto
+  network: ws
+  tls: true
+  servername: n1753598445.74qxv.top
+  ws-opts:
+    path: /
+    headers:
+      Host: n1753598445.74qxv.top
 - name: OpenRay  CA-10261
   type: vless
   server: 172.67.66.177
@@ -668,6 +670,30 @@ proxies:
     path: /ws
     headers:
       Host: rAyAn-cOnFiG-ca-1.pAriSa.dPdNs.oRg
+- name: OpenRay  CA-10260
+  type: vless
+  server: 104.24.197.20
+  port: 443
+  uuid: 67cf43da-d94c-4d93-b073-ac9305b16ec3
+  network: ws
+  tls: true
+  servername: rAyAn-cOnFiG-ca-1.pAriSa.dPdNs.oRg
+  ws-opts:
+    path: /ws
+    headers:
+      Host: rAyAn-cOnFiG-ca-1.pAriSa.dPdNs.oRg
+- name: OpenRay  JP-357
+  type: vless
+  server: 139.162.83.82
+  port: 32225
+  uuid: aa7f42cc-616f-4550-9a87-4b85bb409121
+  network: ws
+  tls: true
+  servername: vless3.datatestvless.click
+  ws-opts:
+    path: /?ed=2560
+    headers:
+      Host: vless3.datatestvless.click
 
 proxy-groups:
 - name: AUTO
@@ -680,15 +706,15 @@ proxy-groups:
   - OpenRay  US-10162
   - OpenRay  CA-9417
   - OpenRay  DE-2600
-  - OpenRay  US-9817
   - OpenRay  US-9814
+  - OpenRay  US-9817
   - OpenRay  US-10094
   - OpenRay  US-10095
   - OpenRay  CA-8598
   - OpenRay  CA-8629
   - OpenRay Dynamic-9125
-  - OpenRay  CA-9644
   - OpenRay  CA-9645
+  - OpenRay  CA-9644
   - OpenRay  US-5058
   - OpenRay  US-9434
   - OpenRay Dynamic-7280
@@ -699,8 +725,8 @@ proxy-groups:
   - OpenRay  US-9820
   - OpenRay  US-9813
   - OpenRay  US-9818
-  - OpenRay  US-9824
   - OpenRay  US-9821
+  - OpenRay  US-9824
   - OpenRay  US-9823
   - OpenRay  US-9845
   - OpenRay  US-9871
@@ -723,12 +749,14 @@ proxy-groups:
   - OpenRay  US-10539
   - OpenRay  US-10555
   - OpenRay Dynamic-10133
-  - OpenRay Dynamic-10143
   - OpenRay  US-10579
   - OpenRay  US-10586
-  - OpenRay  CA-10260
+  - OpenRay Dynamic-10143
   - OpenRay  CA-10259
+  - OpenRay  JP-343
   - OpenRay  CA-10261
+  - OpenRay  CA-10260
+  - OpenRay  JP-357
 - name: PROXY
   type: select
   proxies:
@@ -737,15 +765,15 @@ proxy-groups:
   - OpenRay  US-10162
   - OpenRay  CA-9417
   - OpenRay  DE-2600
-  - OpenRay  US-9817
   - OpenRay  US-9814
+  - OpenRay  US-9817
   - OpenRay  US-10094
   - OpenRay  US-10095
   - OpenRay  CA-8598
   - OpenRay  CA-8629
   - OpenRay Dynamic-9125
-  - OpenRay  CA-9644
   - OpenRay  CA-9645
+  - OpenRay  CA-9644
   - OpenRay  US-5058
   - OpenRay  US-9434
   - OpenRay Dynamic-7280
@@ -756,8 +784,8 @@ proxy-groups:
   - OpenRay  US-9820
   - OpenRay  US-9813
   - OpenRay  US-9818
-  - OpenRay  US-9824
   - OpenRay  US-9821
+  - OpenRay  US-9824
   - OpenRay  US-9823
   - OpenRay  US-9845
   - OpenRay  US-9871
@@ -780,12 +808,14 @@ proxy-groups:
   - OpenRay  US-10539
   - OpenRay  US-10555
   - OpenRay Dynamic-10133
-  - OpenRay Dynamic-10143
   - OpenRay  US-10579
   - OpenRay  US-10586
-  - OpenRay  CA-10260
+  - OpenRay Dynamic-10143
   - OpenRay  CA-10259
+  - OpenRay  JP-343
   - OpenRay  CA-10261
+  - OpenRay  CA-10260
+  - OpenRay  JP-357
 rules:
 - DOMAIN-SUFFIX,ir,DIRECT
 - DOMAIN-SUFFIX,aparat.com,DIRECT
