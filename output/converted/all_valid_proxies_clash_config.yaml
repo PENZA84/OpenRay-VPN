@@ -2953,6 +2953,32 @@ proxies:
     public-key: xuyz-KWCYYwC9QfIqM0ur1ki0rd7PClzYgp5olAWPnI
     short-id: c476b6083f325946
   client-fingerprint: chrome
+- name: OpenRay  NL-172
+  type: vless
+  server: nl.rush-server.com
+  port: 443
+  uuid: 4649d442-74df-47ef-9ac9-881117598d99
+  network: tcp
+  flow: xtls-rprx-vision
+  tls: true
+  servername: findmypackets.com
+  reality-opts:
+    public-key: mza5Hn1aolSz65qu-UwvBP3oesxMe25r11o4nxvikF0
+    short-id: d1579a8745398e34
+  client-fingerprint: qq
+- name: OpenRay  NL-173
+  type: vless
+  server: 84.32.188.1
+  port: 443
+  uuid: 983aaabb-27e2-4e15-bbef-b553f23ec8cf
+  network: tcp
+  flow: xtls-rprx-vision
+  tls: true
+  servername: www.google.com
+  reality-opts:
+    public-key: RCV3ZwtxG18Koo5AOj_wD7aefYG4bRnyqRBtiqrqtzE
+    short-id: c38076aa
+  client-fingerprint: chrome
 - name: OpenRay  FI-47
   type: vless
   server: 171.22.114.248
@@ -3218,18 +3244,6 @@ proxies:
     path: /
     headers:
       Host: seoul03.zgjok.com
-- name: OpenRay  KR-41
-  type: vmess
-  server: 3.35.51.147
-  port: 8686
-  uuid: 1a17b19d-4896-4531-af79-6e91d8ef8228
-  alterId: 0
-  cipher: auto
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: end-gfw.com
 - name: OpenRay  JP-343
   type: vmess
   server: n1753598445.74qxv.top
@@ -3351,6 +3365,18 @@ proxies:
     path: /vmess/
     headers:
       Host: 172.111.146.64
+- name: OpenRay  JP-390
+  type: vmess
+  server: 43.207.202.104
+  port: 8686
+  uuid: 1a17b19d-4896-4531-af79-6e91d8ef8228
+  alterId: 0
+  cipher: auto
+  network: ws
+  ws-opts:
+    path: /
+    headers:
+      Host: end-gfw.com
 - name: OpenRay  FR-5
   type: vless
   server: 141.101.120.232
@@ -5348,6 +5374,19 @@ proxies:
     public-key: SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc
     short-id: ''
   client-fingerprint: chrome
+- name: OpenRay  HU-2
+  type: vless
+  server: 217.13.111.70
+  port: 3443
+  uuid: 292e75fc-5a8a-40c4-b937-407c2400a42e
+  network: tcp
+  flow: xtls-rprx-vision
+  tls: true
+  servername: api-maps.yandex.ru
+  reality-opts:
+    public-key: SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc
+    short-id: 6ba85179e30d4fc2
+  client-fingerprint: chrome
 - name: OpenRay  TR-1
   type: vmess
   server: 45.89.52.207
@@ -5520,6 +5559,19 @@ proxies:
     path: /
     headers:
       Host: silent-paper-fa57.fipiyag989.workers.dev
+- name: OpenRay  IE-1
+  type: vless
+  server: 89.124.70.62
+  port: 5398
+  uuid: ddef83b7-0269-fc4f-bd8e-c33e2c5df807
+  network: tcp
+  flow: xtls-rprx-vision
+  tls: true
+  servername: refersion.com
+  reality-opts:
+    public-key: Pvpq99YvDchvhkNcu9WKBQczRRFn-Z4EoGLPKv7LkUk
+    short-id: 703ee948f0421d44
+  client-fingerprint: firefox
 
 proxy-groups:
 - name: AUTO
@@ -5779,6 +5831,8 @@ proxy-groups:
   - OpenRay  NL-167
   - OpenRay  NL-170
   - OpenRay  NL-171
+  - OpenRay  NL-172
+  - OpenRay  NL-173
   - OpenRay  FI-47
   - OpenRay  FI-56
   - OpenRay  RU-615
@@ -5799,7 +5853,6 @@ proxy-groups:
   - OpenRay  KR-34
   - OpenRay  KR-39
   - OpenRay  KR-40
-  - OpenRay  KR-41
   - OpenRay  JP-343
   - OpenRay  JP-357
   - OpenRay  JP-366
@@ -5809,6 +5862,7 @@ proxy-groups:
   - OpenRay  JP-376
   - OpenRay  JP-377
   - OpenRay  JP-389
+  - OpenRay  JP-390
   - OpenRay  FR-5
   - OpenRay  FR-6
   - OpenRay  FR-11
@@ -6005,6 +6059,7 @@ proxy-groups:
   - OpenRay  RO-1
   - OpenRay  LT-1
   - OpenRay  HU-1
+  - OpenRay  HU-2
   - OpenRay  TR-1
   - OpenRay  HK-2
   - OpenRay  HK-4
@@ -6020,6 +6075,7 @@ proxy-groups:
   - OpenRay  KZ-1
   - OpenRay  AU-1
   - OpenRay  IR-1
+  - OpenRay  IE-1
 - name: PROXY
   type: select
   proxies:
@@ -6275,6 +6331,8 @@ proxy-groups:
   - OpenRay  NL-167
   - OpenRay  NL-170
   - OpenRay  NL-171
+  - OpenRay  NL-172
+  - OpenRay  NL-173
   - OpenRay  FI-47
   - OpenRay  FI-56
   - OpenRay  RU-615
@@ -6295,7 +6353,6 @@ proxy-groups:
   - OpenRay  KR-34
   - OpenRay  KR-39
   - OpenRay  KR-40
-  - OpenRay  KR-41
   - OpenRay  JP-343
   - OpenRay  JP-357
   - OpenRay  JP-366
@@ -6305,6 +6362,7 @@ proxy-groups:
   - OpenRay  JP-376
   - OpenRay  JP-377
   - OpenRay  JP-389
+  - OpenRay  JP-390
   - OpenRay  FR-5
   - OpenRay  FR-6
   - OpenRay  FR-11
@@ -6501,6 +6559,7 @@ proxy-groups:
   - OpenRay  RO-1
   - OpenRay  LT-1
   - OpenRay  HU-1
+  - OpenRay  HU-2
   - OpenRay  TR-1
   - OpenRay  HK-2
   - OpenRay  HK-4
@@ -6516,6 +6575,7 @@ proxy-groups:
   - OpenRay  KZ-1
   - OpenRay  AU-1
   - OpenRay  IR-1
+  - OpenRay  IE-1
 rules:
 - DOMAIN-SUFFIX,ir,DIRECT
 - DOMAIN-SUFFIX,aparat.com,DIRECT
