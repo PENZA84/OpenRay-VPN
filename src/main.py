@@ -444,17 +444,28 @@ def main() -> int:
                     subset = alive # [:int(STAGE3_MAX)]
                     kept_subset: List[str] = []
 
-                    def _core_check(u: str) -> Optional[str]:
-                        try:
-                            res = validate_with_v2ray_core(u, timeout_s=12)
-                        except Exception:
-                            return None
-                        return u if res is True else None
+                    def _core_check_with_retry(u: str) -> Optional[str]:
+                        # For existing proxies, we are more lenient and try up to 3 times
+                        # to avoid dropping them due to transient issues.
+                        max_attempts = 3
+                        for attempt in range(max_attempts):
+                            try:
+                                # Slightly longer timeout for existing proxies to be sure
+                                res = validate_with_v2ray_core(u, timeout_s=15)
+                                if res is True:
+                                    return u
+                            except Exception:
+                                pass
+                            
+                            if attempt < max_attempts - 1:
+                                # Small delay between retries
+                                time.sleep(0.5 * (attempt + 1))
+                        return None
 
                     workers = int(STAGE3_WORKERS)
                     with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as pool2:
-                        print("Start Stage 3 for existing proxies")
-                        for r in progress(pool2.map(_core_check, subset), total=len(subset)):
+                        print("Start Stage 3 (with retries) for existing proxies")
+                        for r in progress(pool2.map(_core_check_with_retry, subset), total=len(subset)):
                             if r is not None:
                                 kept_subset.append(r)
                     # Merge: replace subset portion with validated ones
@@ -625,9 +636,10 @@ def main() -> int:
             subset = available_to_add # [:int(STAGE3_MAX)]
             kept_subset: List[str] = []
 
-            def _core_check(u: str) -> Optional[str]:
+            def _core_check_new(u: str) -> Optional[str]:
                 try:
-                    res = validate_with_v2ray_core(u, timeout_s=12)
+                    # New proxies get a single attempt with 15s timeout
+                    res = validate_with_v2ray_core(u, timeout_s=15)
                 except Exception:
                     return None
                 return u if res is True else None
@@ -635,7 +647,7 @@ def main() -> int:
             workers = int(STAGE3_WORKERS)
             with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as pool2:
                 print("Start Stage 3 for new proxies")
-                for r in progress(pool2.map(_core_check, subset), total=len(subset)):
+                for r in progress(pool2.map(_core_check_new, subset), total=len(subset)):
                     if r is not None:
                         kept_subset.append(r)
             # Merge: replace subset portion with validated ones
