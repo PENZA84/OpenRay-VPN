@@ -413,24 +413,24 @@ def main() -> int:
 
                 return result[0]
 
-            # Skip Stage 2 for existing proxies - keep all existing proxies without revalidation
-            # with concurrent.futures.ThreadPoolExecutor(max_workers=PING_WORKERS) as pool:
-            #     print("Start Stage 2 for existing proxies")
-            #     for res in progress(pool.map(check_existing, items), total=len(items)):
-            #         if res is not None:
-            #             alive.append(res)
-            #             h = host_map_existing.get(res)
-            #             if h:
-            #                 host_success_run[h] = True
+            # Re-enable Stage 2 for existing proxies to quickly filter out dead ones
+            with concurrent.futures.ThreadPoolExecutor(max_workers=PING_WORKERS) as pool:
+                print("Start Stage 2 (Quick Filter) for existing proxies")
+                for res in progress(pool.map(check_existing, items), total=len(items)):
+                    if res is not None:
+                        alive.append(res)
+                        h = host_map_existing.get(res)
+                        if h:
+                            host_success_run[h] = True
             
-            # Keep all existing proxies without Stage 2 revalidation
+            # For proxies that were NOT in the items list (e.g. invalid host extraction)
+            # we keep them for now to be safe, although they might fail Stage 3
+            item_uris = {u for u, h in items}
             for u in existing_lines:
-                alive.append(u)
-                h = host_map_existing.get(u)
-                if h:
-                    host_success_run[h] = True
+                if u not in item_uris:
+                    alive.append(u)
 
-            # Optional Stage 3: validate a subset of revalidated existing proxies with V2Ray core (if configured)
+            # Optional Stage 3: validate revalidated existing proxies with V2Ray core (if configured)
             if int(ENABLE_STAGE3) == 1 and alive:
                 core_path = ''
                 try:
@@ -445,13 +445,13 @@ def main() -> int:
                     kept_subset: List[str] = []
 
                     def _core_check_with_retry(u: str) -> Optional[str]:
-                        # For existing proxies, we are more lenient and try up to 10 times
+                        # For existing proxies, we are more lenient and try up to 5 times
                         # to avoid dropping them due to transient issues.
-                        max_attempts = 10
+                        max_attempts = 5
                         for attempt in range(max_attempts):
                             try:
                                 # Slightly longer timeout for existing proxies to be sure
-                                res = validate_with_v2ray_core(u, timeout_s=30)
+                                res = validate_with_v2ray_core(u, timeout_s=20)
                                 if res is True:
                                     return u
                             except Exception:
@@ -459,7 +459,7 @@ def main() -> int:
                             
                             if attempt < max_attempts - 1:
                                 # Progressive delay between retries
-                                time.sleep(1.0 * (attempt + 1))
+                                time.sleep(2.0 * (attempt + 1))
                         return None
 
                     workers = int(STAGE3_WORKERS)
