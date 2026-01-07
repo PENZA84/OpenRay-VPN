@@ -1,7 +1,8 @@
 from src.common import normalize_proxy_uri, get_openray_dedup_key
 proxies = [
-    "trojan://.+QAJot50sDi6mvb@5.188.108.13:11790/?type=tcp&security=tls&sni=runningshoes.purpletornado.click#%5BOpenRay%5D%20%F0%9F%87%B5%F0%9F%87%B1%20PL-104",
-    "trojan://.+QAJot50sDi6mvb@5.188.108.13:11790?security=tls&sni=runningshoes.purpletornado.click&type=tcp&path=/#%5BOpenRay%5D%20%F0%9F%87%B5%F0%9F%87%B1%20PL-106"
+"trojan://87d1bfd4-574e-4c96-ad42-0426f27461ff@cf.090227.xyz:443?path=%2F&security=tls&host=_acme-challenge.2go.cloudns.be&type=ws&sni=_acme-challenge.2go.cloudns.be&allowInsecure=1#%5BOpenRay%5D%20Dynamic-8530",
+"trojan://87d1bfd4-574e-4c96-ad42-0426f27461ff@cf.090227.xyz:443?security=tls&sni=_acme-challenge.2go.cloudns.be&type=ws&path=%2F&Host=_acme-challenge.2go.cloudns.be#%5BOpenRay%5D%20Dynamic-8626"
+
 ]
 for i,p in enumerate(proxies,1):
     norm = normalize_proxy_uri(p)

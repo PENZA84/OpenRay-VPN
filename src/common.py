@@ -333,11 +333,17 @@ def _normalize_trojan(uri: str, parsed) -> str:
             'security', 'type', 'path', 'host', 'sni', 'alpn', 'pbk', 'sid', 'flow'
         ]
 
+        # Pre-read SNI to allow host==sni suppression
+        sni_value = query_params.get('sni', [None])[0] if 'sni' in query_params else None
+
         for param in connection_params:
             if param in query_params and query_params[param]:
                 value = query_params[param][0]
                 # Treat path "/" as empty (no meaningful difference)
                 if param == 'path' and value in ('', '/'):
+                    continue
+                # If host header equals SNI, treat as redundant
+                if param == 'host' and sni_value and value == sni_value:
                     continue
                 if value:  # Only include non-empty values
                     conn_params[param] = value
