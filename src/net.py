@@ -352,39 +352,13 @@ def validate_with_v2ray_core(uri: str, timeout_s: int = 10) -> Optional[bool]:
         })
         cfg['inbounds'] = inb
 
-        # Write temp config file
-        tmp = tempfile.NamedTemporaryFile(delete=False, suffix='.json')
-        tmp_path = tmp.name
-        try:
-            tmp.write(_json.dumps(cfg).encode('utf-8'))
-            tmp.flush()
-        finally:
-            tmp.close()
-
-        # Start Xray
-        creation = (subprocess.CREATE_NO_WINDOW if os.name == 'nt' and hasattr(subprocess, 'CREATE_NO_WINDOW') else 0)
-        proc = subprocess.Popen([path, '-config', tmp_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, creationflags=creation)
-
-        # Give it a brief moment to start
-        start = time.time()
-        time.sleep(0.25)
-
-        # Prepare proxy opener
+        # Prepare proxy opener (check availability once)
         try:
             from urllib.request import build_opener, ProxyHandler
         except Exception:
             build_opener = None
             ProxyHandler = None
         if build_opener is None or ProxyHandler is None:
-            # Cannot construct proxy opener; abort and cleanup
-            try:
-                proc.terminate()
-            except Exception:
-                pass
-            try:
-                os.unlink(tmp_path)
-            except Exception:
-                pass
             return None
 
         # Try a small set of endpoints
@@ -394,13 +368,72 @@ def validate_with_v2ray_core(uri: str, timeout_s: int = 10) -> Optional[bool]:
         ]
         
         # Perform up to 3 real-delay tests per proxy with retry logic
+        # Each retry gets a fresh xray process to avoid issues with crashed/stale processes
         max_retries = 3
         ok = False
+        proc = None
+        tmp_path = None
         
         for attempt in range(max_retries):
-            # Time budget for this attempt
+            # Clean up previous attempt's process if it exists
+            if proc is not None:
+                try:
+                    proc.terminate()
+                except Exception:
+                    pass
+                try:
+                    proc.wait(timeout=0.2)
+                except Exception:
+                    if hasattr(proc, 'kill'):
+                        proc.kill()
+                except Exception:
+                    pass
+                proc = None
+            
+            # Write temp config file for this attempt
+            tmp = tempfile.NamedTemporaryFile(delete=False, suffix='.json')
+            tmp_path = tmp.name
+            try:
+                tmp.write(_json.dumps(cfg).encode('utf-8'))
+                tmp.flush()
+            finally:
+                tmp.close()
+
+            # Start fresh Xray process for this attempt
+            creation = (subprocess.CREATE_NO_WINDOW if os.name == 'nt' and hasattr(subprocess, 'CREATE_NO_WINDOW') else 0)
+            try:
+                proc = subprocess.Popen([path, '-config', tmp_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, creationflags=creation)
+            except Exception:
+                # Failed to start process, try next retry
+                try:
+                    os.unlink(tmp_path)
+                except Exception:
+                    pass
+                tmp_path = None
+                if attempt < max_retries - 1:
+                    time.sleep(random.uniform(0.2, 0.5))
+                continue
+
+            # Give it a brief moment to start
+            time.sleep(0.25)
+            
+            # Check if process is still alive
+            if proc.poll() is not None:
+                # Process died immediately, try next retry
+                try:
+                    os.unlink(tmp_path)
+                except Exception:
+                    pass
+                tmp_path = None
+                proc = None
+                if attempt < max_retries - 1:
+                    time.sleep(random.uniform(0.2, 0.5))
+                continue
+            
+            # Time budget for this attempt (reduced per attempt to avoid total timeout explosion)
             attempt_start = time.time()
-            deadline = attempt_start + max(2.0, float(timeout_s))
+            attempt_timeout = max(2.0, float(timeout_s) / 2.0)  # Split timeout across retries
+            deadline = attempt_start + attempt_timeout
             
             # Try each test URL
             for url in test_urls:
@@ -425,30 +458,38 @@ def validate_with_v2ray_core(uri: str, timeout_s: int = 10) -> Optional[bool]:
             if ok:
                 break
             
-            # Sleep between retries (0.2-3.33 seconds) to avoid anti-probe or rate-limit issues
+            # Clean up config file for failed attempt
+            if tmp_path:
+                try:
+                    os.unlink(tmp_path)
+                except Exception:
+                    pass
+                tmp_path = None
+            
+            # Sleep between retries (0.2-1.0 seconds) to avoid anti-probe or rate-limit issues
             # Only sleep if this isn't the last attempt
             if attempt < max_retries - 1:
                 sleep_duration = random.uniform(0.2, min(1.0, timeout_s / 3))
                 time.sleep(sleep_duration)
 
-        # Cleanup
-        try:
-            proc.terminate()
-        except Exception:
-            pass
-        try:
-            # If still alive, kill
+        # Final cleanup
+        if proc is not None:
+            try:
+                proc.terminate()
+            except Exception:
+                pass
             try:
                 proc.wait(timeout=0.2)
             except Exception:
                 if hasattr(proc, 'kill'):
                     proc.kill()
-        except Exception:
-            pass
-        try:
-            os.unlink(tmp_path)
-        except Exception:
-            pass
+            except Exception:
+                pass
+        if tmp_path:
+            try:
+                os.unlink(tmp_path)
+            except Exception:
+                pass
 
         return True if ok else False
     except Exception:
