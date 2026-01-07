@@ -411,8 +411,9 @@ def validate_with_v2ray_core(uri: str, timeout_s: int = 60) -> Optional[bool]:
             creation = (subprocess.CREATE_NO_WINDOW if os.name == 'nt' and hasattr(subprocess, 'CREATE_NO_WINDOW') else 0)
             try:
                 proc = subprocess.Popen([path, '-config', tmp_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, creationflags=creation)
-            except Exception:
+            except Exception as e:
                 # Failed to start process, try next retry
+                # print(f"DEBUG: Failed to spawn Xray: {e}", flush=True)
                 try:
                     os.unlink(tmp_path)
                 except Exception:
@@ -428,6 +429,7 @@ def validate_with_v2ray_core(uri: str, timeout_s: int = 60) -> Optional[bool]:
             ready = False
             while time.time() - start_wait < 2.0:
                 if proc.poll() is not None:
+                    # print(f"DEBUG: Xray died immediately with code {proc.poll()}", flush=True)
                     break # Process died
                 
                 # Try to connect to the local port to see if it's ready
@@ -444,6 +446,7 @@ def validate_with_v2ray_core(uri: str, timeout_s: int = 60) -> Optional[bool]:
             # Check if process is still alive and ready
             if not ready or proc.poll() is not None:
                 # Process died or didn't start listening, try next retry
+                # print(f"DEBUG: Xray not ready after 2s (ready={ready}, poll={proc.poll()})", flush=True)
                 try:
                     proc.terminate()
                 except Exception:
@@ -480,7 +483,8 @@ def validate_with_v2ray_core(uri: str, timeout_s: int = 60) -> Optional[bool]:
                         if isinstance(code, int) and code in (200, 204):
                             ok = True
                             break
-                except Exception:
+                except Exception as e:
+                    # print(f"DEBUG: Fetch error for {url}: {e}", flush=True)
                     continue
             
             # Stop early if one test succeeds

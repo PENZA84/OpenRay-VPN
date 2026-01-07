@@ -445,9 +445,9 @@ def main() -> int:
                     kept_subset: List[str] = []
 
                     def _core_check_with_retry(u: str) -> Optional[str]:
-                        # For existing proxies, we are more lenient and try up to 3 times
+                        # For existing proxies, we are more lenient and try up to 5 times
                         # to avoid dropping them due to transient issues.
-                        max_attempts = 3
+                        max_attempts = 5
                         for attempt in range(max_attempts):
                             try:
                                 # Slightly longer timeout for existing proxies to be sure
@@ -458,8 +458,8 @@ def main() -> int:
                                 pass
                             
                             if attempt < max_attempts - 1:
-                                # Small delay between retries
-                                time.sleep(0.5 * (attempt + 1))
+                                # Progressive delay between retries
+                                time.sleep(1.0 * (attempt + 1))
                         return None
 
                     workers = int(STAGE3_WORKERS)
