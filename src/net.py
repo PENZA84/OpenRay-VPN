@@ -369,7 +369,7 @@ def validate_with_v2ray_core(uri: str, timeout_s: int = 10) -> Optional[bool]:
         
         # Perform up to 3 real-delay tests per proxy with retry logic
         # Each retry gets a fresh xray process to avoid issues with crashed/stale processes
-        max_retries = 3
+        max_retries = 1
         ok = False
         proc = None
         tmp_path = None
