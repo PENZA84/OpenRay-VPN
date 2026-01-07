@@ -38,15 +38,34 @@ def safe_b64decode_to_bytes(s: str) -> bytes | None:
         return None
     # Remove whitespace
     compact = ''.join(s.split())
-    # Convert URL-safe variants
-    compact = compact.replace('-', '+').replace('_', '/')
-    # Pad
-    padding = (-len(compact)) % 4
-    compact += '=' * padding
-    try:
-        return base64.b64decode(compact, validate=False)
-    except Exception:
-        return None
+
+    # Helper to attempt decode with a given candidate
+    def _try_decode(candidate: str) -> bytes | None:
+        try:
+            padding = (-len(candidate)) % 4
+            candidate_padded = candidate + ('=' * padding)
+            return base64.b64decode(candidate_padded, validate=False)
+        except Exception:
+            try:
+                return base64.urlsafe_b64decode(candidate + ('=' * ((-len(candidate)) % 4)))
+            except Exception:
+                return None
+
+    # 1) Try as-is (after stripping whitespace)
+    b = _try_decode(compact)
+    if b is not None:
+        return b
+
+    # 2) Try with URL-safe replacements
+    urlsafe = compact.replace('-', '+').replace('_', '/')
+    b = _try_decode(urlsafe)
+    if b is not None:
+        return b
+
+    # 3) Last resort: filter out non-base64 characters and retry
+    filtered = ''.join(ch for ch in compact if ch.isalnum() or ch in '+/=_-')
+    b = _try_decode(filtered)
+    return b
 
 
 def normalize_proxy_uri(uri: str) -> str:
@@ -107,8 +126,14 @@ def _normalize_vmess(uri: str, parsed) -> str:
     """Normalize VMess proxy URI."""
     try:
         # Extract and decode the base64 payload
-        # VMess format: vmess://base64_json - payload is in netloc, not path
-        payload_b64 = parsed.netloc or parsed.path.lstrip('/')
+        # VMess format: vmess://base64_json
+        # Note: urlparse may split the base64 string if it contains '/' characters
+        # So we extract the payload directly from the URI string after the scheme
+        if '://' not in uri:
+            return uri
+        # Get everything after vmess:// and before any # (remark)
+        base_uri = uri.split('#', 1)[0]
+        payload_b64 = base_uri.split('://', 1)[1]
         if not payload_b64:
             return uri
 
@@ -123,12 +148,25 @@ def _normalize_vmess(uri: str, parsed) -> str:
         def normalize_value(v):
             if v == '' or v is None:
                 return None
+            # Convert to string and strip, ensuring consistent type
+            return str(v).strip()
+        
+        # Normalize port specifically - ensure it's always a string
+        def normalize_port(v):
+            if v is None:
+                return None
+            # Handle both string and numeric ports
+            if isinstance(v, (int, float)):
+                return str(int(v))
+            if isinstance(v, str):
+                return v.strip()
             return str(v).strip()
 
         # Extract connection-defining parameters with consistent defaults
         # Treat empty strings same as missing for optional fields
         add = normalize_value(obj.get('add') or obj.get('address'))
-        port = normalize_value(obj.get('port') or obj.get('portNumber'))
+        port_raw = obj.get('port') or obj.get('portNumber')
+        port = normalize_port(port_raw)
         id_val = normalize_value(obj.get('id'))
         
         # Required fields
