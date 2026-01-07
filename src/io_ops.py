@@ -219,7 +219,11 @@ def load_tested_hashes_optimized() -> Set[str]:
                         timestamp, hash_bytes = struct.unpack('>Q20s', entry)
                         tested.add(bytes_to_hash(hash_bytes))
             except Exception:
-                # Fallback to text format for this file if binary is corrupted
+                # If .bin is not effective (corrupted/unreadable), remove it and fall back to text
+                try:
+                    os.remove(bin_file)
+                except Exception:
+                    pass
                 try:
                     for line in read_lines(tested_file):
                         h = line.strip()
@@ -295,10 +299,10 @@ def append_tested_hashes_optimized(new_hashes: Iterable[str]) -> None:
     # Check if we need to rotate first
     if should_rotate_tested_file():
         # Rotate immediately if current file is already at/over limit
-        print(f"Current file is {os.path.getsize(get_current_tested_file()) / (1024 * 1024):.1f}MB >= 50MB, rotating...")
+        print("Current tested file is at or above size limit, rotating before append...")
         rotate_tested_file()
 
-    # Get current active file
+    # Get current active file (text) and its binary companion
     current_file = get_current_tested_file()
     bin_file = current_file + '.bin'
 
@@ -321,23 +325,34 @@ def append_tested_hashes_optimized(new_hashes: Iterable[str]) -> None:
 
     if new_entries:
         try:
-            # Check file size before writing
-            if os.path.exists(current_file):
-                current_size_mb = os.path.getsize(current_file) / (1024 * 1024)
-                # Estimate size increase (each entry is ~41 bytes in text format)
-                estimated_new_size_mb = current_size_mb + (len(new_entries) * 41) / (1024 * 1024)
+            # Check combined binary size before writing (this is what actually grows)
+            current_size_bytes = 0
+            try:
+                if os.path.exists(bin_file):
+                    current_size_bytes += os.path.getsize(bin_file)
+            except OSError:
+                pass
 
-                if estimated_new_size_mb >= 50:
-                    # Rotate to new file
-                    new_file = rotate_tested_file()
-                    current_file = new_file
-                    bin_file = new_file + '.bin'
+            # Each binary entry is exactly 28 bytes
+            estimated_new_size_mb = (current_size_bytes + len(new_entries) * 28) / (1024 * 1024)
+
+            if estimated_new_size_mb >= 10:
+                # Rotate to new file when the *binary* representation would cross 10MB
+                new_file = rotate_tested_file()
+                current_file = new_file
+                bin_file = new_file + '.bin'
 
             with open(bin_file, 'ab') as f:
                 for entry in new_entries:
                     f.write(entry)
         except Exception:
-            # Fallback to text format
+            # .bin not effective (e.g., write failure) -> remove it and fall back to text format
+            try:
+                if os.path.exists(bin_file):
+                    os.remove(bin_file)
+            except Exception:
+                pass
+
             try:
                 # Check file size for text format too
                 if os.path.exists(current_file):
@@ -345,7 +360,7 @@ def append_tested_hashes_optimized(new_hashes: Iterable[str]) -> None:
                     # Estimate size increase (each hash is ~41 bytes)
                     estimated_new_size_mb = current_size_mb + (len(new_entries) * 41) / (1024 * 1024)
 
-                    if estimated_new_size_mb >= 50:
+                    if estimated_new_size_mb >= 10:
                         # Rotate to new file
                         new_file = rotate_tested_file()
                         current_file = new_file
@@ -446,12 +461,26 @@ def get_current_tested_file() -> str:
     return os.path.join(state_dir, current_file)
 
 
-def should_rotate_tested_file(max_size_mb: int = 50) -> bool:
+def should_rotate_tested_file(max_size_mb: int = 10) -> bool:
     """Check if current tested file should be rotated based on size."""
     current_file = get_current_tested_file()
     if not os.path.exists(current_file):
         return False
-    size_mb = os.path.getsize(current_file) / (1024 * 1024)
+    # Consider both text and binary representations when deciding rotation
+    size_bytes = 0
+    try:
+        size_bytes += os.path.getsize(current_file)
+    except OSError:
+        pass
+
+    bin_file = current_file + '.bin'
+    try:
+        if os.path.exists(bin_file):
+            size_bytes += os.path.getsize(bin_file)
+    except OSError:
+        pass
+
+    size_mb = size_bytes / (1024 * 1024)
     return size_mb >= max_size_mb
 
 

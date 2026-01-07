@@ -425,10 +425,10 @@ def validate_with_v2ray_core(uri: str, timeout_s: int = 10) -> Optional[bool]:
             if ok:
                 break
             
-            # Sleep between retries (2-5 seconds) to avoid anti-probe or rate-limit issues
+            # Sleep between retries (0.2-3.33 seconds) to avoid anti-probe or rate-limit issues
             # Only sleep if this isn't the last attempt
             if attempt < max_retries - 1:
-                sleep_duration = random.uniform(2.0, 5.0)
+                sleep_duration = random.uniform(0.2, min(1.0, timeout_s / 3))
                 time.sleep(sleep_duration)
 
         # Cleanup
