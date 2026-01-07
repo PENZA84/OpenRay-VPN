@@ -3365,18 +3365,6 @@ proxies:
     path: /vmess/
     headers:
       Host: 172.111.146.64
-- name: OpenRay  JP-390
-  type: vmess
-  server: 43.207.202.104
-  port: 8686
-  uuid: 1a17b19d-4896-4531-af79-6e91d8ef8228
-  alterId: 0
-  cipher: auto
-  network: ws
-  ws-opts:
-    path: /
-    headers:
-      Host: end-gfw.com
 - name: OpenRay  FR-5
   type: vless
   server: 141.101.120.232
@@ -5862,7 +5850,6 @@ proxy-groups:
   - OpenRay  JP-376
   - OpenRay  JP-377
   - OpenRay  JP-389
-  - OpenRay  JP-390
   - OpenRay  FR-5
   - OpenRay  FR-6
   - OpenRay  FR-11
@@ -6362,7 +6349,6 @@ proxy-groups:
   - OpenRay  JP-376
   - OpenRay  JP-377
   - OpenRay  JP-389
-  - OpenRay  JP-390
   - OpenRay  FR-5
   - OpenRay  FR-6
   - OpenRay  FR-11
