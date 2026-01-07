@@ -337,16 +337,25 @@ def _normalize_trojan(uri: str, parsed) -> str:
         sni_value = query_params.get('sni', [None])[0] if 'sni' in query_params else None
 
         for param in connection_params:
-            if param in query_params and query_params[param]:
-                value = query_params[param][0]
-                # Treat path "/" as empty (no meaningful difference)
-                if param == 'path' and value in ('', '/'):
+            if param not in query_params or not query_params[param]:
+                continue
+            value = query_params[param][0]
+
+            # Normalize path: ignore pure "/" or "/?..." paths
+            if param == 'path':
+                # Drop any query-like part inside path (e.g., "/?ed=2560")
+                base_path = value.split('?', 1)[0] if value else value
+                if base_path in ('', '/'):
+                    # No meaningful path difference → skip
                     continue
-                # If host header equals SNI, treat as redundant
-                if param == 'host' and sni_value and value == sni_value:
-                    continue
-                if value:  # Only include non-empty values
-                    conn_params[param] = value
+                value = base_path
+
+            # If host header equals SNI, treat as redundant
+            if param == 'host' and sni_value and value == sni_value:
+                continue
+
+            if value:  # Only include non-empty values
+                conn_params[param] = value
 
         # Normalize defaults
         if conn_params.get('security') == 'tls':
