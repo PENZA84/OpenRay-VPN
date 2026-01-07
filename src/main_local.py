@@ -68,11 +68,16 @@ def main() -> int:
     log(f"Checking {len(items)} proxies from {AVAILABLE_FILE} ...")
 
     alive: List[str] = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=PING_WORKERS) as pool:
-        print("Start Stage 2 for existing proxies")
-        for res in progress(pool.map(_check_one, items), total=len(items)):
-            if res is not None:
-                alive.append(res)
+    # Skip Stage 2 for existing proxies - keep all proxies without revalidation
+    # with concurrent.futures.ThreadPoolExecutor(max_workers=PING_WORKERS) as pool:
+    #     print("Start Stage 2 for existing proxies")
+    #     for res in progress(pool.map(_check_one, items), total=len(items)):
+    #         if res is not None:
+    #             alive.append(res)
+    
+    # Keep all proxies without Stage 2 revalidation
+    for uri, _ in items:
+        alive.append(uri)
 
     # Optional Stage 3: validate a subset with V2Ray core (if configured)
     if int(ENABLE_STAGE3) == 1 and alive:
