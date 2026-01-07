@@ -430,9 +430,10 @@ def validate_with_v2ray_core(uri: str, timeout_s: int = 10) -> Optional[bool]:
                     time.sleep(random.uniform(0.2, 0.5))
                 continue
             
-            # Time budget for this attempt (reduced per attempt to avoid total timeout explosion)
+            # Time budget for this attempt: divide total timeout by number of retries, but ensure minimum reasonable timeout
+            # Each retry gets timeout_s / max_retries, but at least 6 seconds to allow proper connection (process start + test)
             attempt_start = time.time()
-            attempt_timeout = max(2.0, float(timeout_s) / 2.0)  # Split timeout across retries
+            attempt_timeout = max(6.0, float(timeout_s) / float(max_retries))
             deadline = attempt_start + attempt_timeout
             
             # Try each test URL
@@ -445,7 +446,7 @@ def validate_with_v2ray_core(uri: str, timeout_s: int = 10) -> Optional[bool]:
                         'https': f'http://127.0.0.1:{http_port}',
                     }))
                     req = Request(url, headers={'User-Agent': USER_AGENT, 'Accept': '*/*'})
-                    rem = max(0.5, deadline - time.time())
+                    rem = max(1.0, deadline - time.time())  # At least 1 second for request
                     with opener.open(req, timeout=rem) as resp:
                         code = getattr(resp, 'status', None) or getattr(resp, 'code', None)
                         if isinstance(code, int) and code in (200, 204):
@@ -456,6 +457,26 @@ def validate_with_v2ray_core(uri: str, timeout_s: int = 10) -> Optional[bool]:
             
             # Stop early if one test succeeds
             if ok:
+                # Clean up process and config file before returning success
+                if proc is not None:
+                    try:
+                        proc.terminate()
+                    except Exception:
+                        pass
+                    try:
+                        proc.wait(timeout=0.2)
+                    except Exception:
+                        if hasattr(proc, 'kill'):
+                            proc.kill()
+                    except Exception:
+                        pass
+                    proc = None
+                if tmp_path:
+                    try:
+                        os.unlink(tmp_path)
+                    except Exception:
+                        pass
+                    tmp_path = None
                 break
             
             # Clean up config file for failed attempt
