@@ -368,22 +368,26 @@ def main() -> int:
 
                 def _check_proxy_operation():
                     try:
-                        # Quick ping check with very short timeout
-                        if not ping_host(h):
-                            return None
+                        # Step 1: Fast ICMP/TCP fallback check (speed boost)
+                        ping_ok = ping_host(h)
+                        
                         scheme = u.split('://', 1)[0].lower()
                         if scheme in ('vmess', 'vless', 'trojan', 'ss', 'ssr'):
                             p = extract_port(u)
                             if p is not None:
-                                # Connect check with short timeout
+                                # Step 2: Specific port check (hard gate)
+                                # We try this even if ping_host failed, because some hosts block ICMP/fallback ports.
                                 ok = connect_host_port(h, int(p))
                                 if not ok:
                                     return None
+                                
+                                # Step 3: Optional protocol probe
                                 if int(ENABLE_STAGE2) == 1:
-                                    # Protocol probe with short timeout
                                     return u if quick_protocol_probe(u, h, int(p)) else None
                                 return u
-                        return u
+                        
+                        # If not a recognized TCP scheme or port extraction failed, fallback to ping result
+                        return u if ping_ok else None
                     except Exception as e:
                         # Log any exceptions that occur
                         print(f"Warning: Exception checking proxy {h}: {e}", flush=True)
@@ -414,22 +418,22 @@ def main() -> int:
                 return result[0]
 
 
-            # Skip Stage 2 for existing proxies - keep all existing proxies without revalidation
-            with concurrent.futures.ThreadPoolExecutor(max_workers=PING_WORKERS) as pool:
-                print("Start Stage 2 for existing proxies")
-                for res in progress(pool.map(check_existing, items), total=len(items)):
-                    if res is not None:
-                        alive.append(res)
-                        h = host_map_existing.get(res)
-                        if h:
-                            host_success_run[h] = True
+            # # Skip Stage 2 for existing proxies - keep all existing proxies without revalidation
+            # with concurrent.futures.ThreadPoolExecutor(max_workers=PING_WORKERS) as pool:
+            #     print("Start Stage 2 for existing proxies")
+            #     for res in progress(pool.map(check_existing, items), total=len(items)):
+            #         if res is not None:
+            #             alive.append(res)
+            #             h = host_map_existing.get(res)
+            #             if h:
+            #                 host_success_run[h] = True
             
             # Keep all existing proxies without Stage 2 revalidation
-            # for u in existing_lines:
-            #     alive.append(u)
-            #     h = host_map_existing.get(u)
-            #     if h:
-            #         host_success_run[h] = True
+            for u in existing_lines:
+                alive.append(u)
+                h = host_map_existing.get(u)
+                if h:
+                    host_success_run[h] = True
 
             # Optional Stage 3: validate revalidated existing proxies with V2Ray core (if configured)
             if int(ENABLE_STAGE3) == 1 and alive:
@@ -571,10 +575,12 @@ def main() -> int:
 
         def _check_new_proxy_operation():
             try:
-                # First, ensure host is reachable (ICMP/TCP fallback)
-                if not ping_host(host):
-                    return (uri, host, False)
-                # Then, for TCP-based schemes, also ensure we can connect to the specific port
+                # Step 1: Fast ICMP/TCP fallback check (speed boost)
+                ping_ok = ping_host(host)
+                
+                # Step 2: Specific port check (hard gate)
+                # For TCP-based schemes, we ensure we can connect to the specific port.
+                # We try this even if ping_host failed, because some hosts block ICMP/fallback ports.
                 scheme = uri.split('://', 1)[0].lower()
                 if scheme in ('vmess', 'vless', 'trojan', 'ss', 'ssr'):
                     p = extract_port(uri)
@@ -583,7 +589,9 @@ def main() -> int:
                         if ok2 and int(ENABLE_STAGE2) == 1:
                             ok2 = quick_protocol_probe(uri, host, int(p))
                         return (uri, host, ok2)
-                return (uri, host, True)
+                
+                # If not a recognized TCP scheme or port extraction failed, fallback to ping result
+                return (uri, host, ping_ok)
             except Exception:
                 return (uri, host, False)
 

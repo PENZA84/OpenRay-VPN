@@ -54,91 +54,6 @@ def fetch_url(url: str, timeout: int = FETCH_TIMEOUT) -> Optional[str]:
         return None
 
 
-def ping_host(host: str) -> bool:
-    """Check host reachability via ICMP or TCP fallback."""
-    host_ascii = _idna(host)
-    timeout_ms = int(PING_TIMEOUT_MS)
-    is_windows = os.name == 'nt' or sys.platform.startswith('win')
-
-    # If running in GitHub Actions, skip ICMP and go straight to TCP fallback to avoid CAP_NET_RAW issues.
-    force_tcp = os.environ.get('GITHUB_ACTIONS', '').lower() == 'true'
-
-    if not force_tcp:
-        # Build candidate commands depending on platform
-        cmds: List[List[str]] = []
-        if is_windows:
-            # Windows: -n (count), -w (timeout in ms), -4/-6 to force family
-            cmds = [
-                ["ping", "-n", "1", "-w", str(timeout_ms), "-4", host_ascii],
-                ["ping", "-n", "1", "-w", str(timeout_ms), "-6", host_ascii],
-            ]
-        else:
-            is_darwin = sys.platform == 'darwin'
-            if is_darwin:
-                # macOS/BSD: -c (count), -W timeout in ms. BSD ping typically lacks -4/-6; use ping then ping6.
-                cmds = [
-                    ["ping", "-c", "1", "-W", str(timeout_ms), host_ascii],
-                    ["ping6", "-c", "1", "-W", str(timeout_ms), host_ascii],
-                ]
-            else:
-                # Linux: -c (count), -W timeout in seconds. Use -4/-6 to force family.
-                timeout_sec = max(1, int(round(timeout_ms / 1000.0)))
-                cmds = [
-                    ["ping", "-c", "1", "-W", str(timeout_sec), "-4", host_ascii],
-                    ["ping", "-c", "1", "-W", str(timeout_sec), "-6", host_ascii],
-                ]
-
-        py_timeout = (timeout_ms / 1000.0) + 1.0
-        for cmd in cmds:
-            try:
-                res = subprocess.run(
-                    cmd,
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.DEVNULL,
-                    timeout=py_timeout,
-                    creationflags=(subprocess.CREATE_NO_WINDOW if is_windows and hasattr(subprocess, 'CREATE_NO_WINDOW') else 0),
-                )
-                if res.returncode == 0:
-                    return True
-            except FileNotFoundError:
-                # e.g., ping6 not present
-                continue
-            except Exception:
-                continue
-
-    # TCP fallback: try to connect to a few common ports with a short timeout
-    try:
-        # Resolve host (prefer IPv4 first)
-        # Set DNS timeout
-        original_timeout = socket.getdefaulttimeout()
-        socket.setdefaulttimeout(max(0.5, min(3.0, timeout_ms / 1000.0)))
-        try:
-            infos = socket.getaddrinfo(host_ascii, None, proto=socket.IPPROTO_TCP)
-        finally:
-            socket.setdefaulttimeout(original_timeout)
-        # Order: IPv4 first, then others
-        addrs: List[str] = []
-        for fam, _, _, _, sockaddr in infos:
-            ip = sockaddr[0]
-            if fam == socket.AF_INET:
-                addrs.append(ip)
-        for fam, _, _, _, sockaddr in infos:
-            if fam != socket.AF_INET:
-                addrs.append(sockaddr[0])
-        timeout_sec = max(0.2, min(2.0, timeout_ms / 1000.0))
-        for ip in addrs:
-            for port in TCP_FALLBACK_PORTS:
-                try:
-                    with socket.create_connection((ip, port), timeout=timeout_sec):
-                        return True
-                except Exception:
-                    continue
-    except Exception:
-        pass
-
-    return False
-
-
 def connect_host_port(host: str, port: int, timeout_ms: int = CONNECT_TIMEOUT_MS) -> bool:
     """Attempt a TCP connection to host:port within timeout. Returns True on success."""
     if not host or not isinstance(port, int):
@@ -848,8 +763,9 @@ def get_country_codes_batch(hosts: List[str], timeout: int = 5, batch_size: int 
 def check_one_sync(uri: str, host: str) -> Tuple[str, str, bool]:
     """Synchronous checker used for multiprocessing. Mirrors main.check_one logic."""
     try:
-        if not ping_host(host):
-            return (uri, host, False)
+        # Step 1: Fast ICMP/TCP fallback check (speed boost)
+        ping_ok = ping_host(host)
+        
         scheme = (uri.split('://', 1)[0] or '').lower()
         if scheme in ('vmess', 'vless', 'trojan', 'ss', 'ssr'):
             try:
@@ -857,12 +773,20 @@ def check_one_sync(uri: str, host: str) -> Tuple[str, str, bool]:
                 p = extract_port(uri)
             except Exception:
                 p = None
+            
             if p is not None:
+                # Step 2: Specific port check (hard gate)
+                # We try this even if ping_host failed, because some hosts block ICMP/fallback ports.
                 ok2 = connect_host_port(host, int(p))
+                
+                # Step 3: Optional protocol probe
                 if ok2 and int(ENABLE_STAGE2) == 1:
                     ok2 = quick_protocol_probe(uri, host, int(p))
+                
                 return (uri, host, ok2)
-        return (uri, host, True)
+        
+        # If not a recognized TCP scheme or port extraction failed, fallback to ping result
+        return (uri, host, ping_ok)
     except Exception:
         return (uri, host, False)
 
