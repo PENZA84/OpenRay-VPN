@@ -375,30 +375,6 @@ proxies:
   network: grpc
   tls: true
   servername: pqh30v5.carwashipdir.shop
-- name: OpenRay  CA-10260
-  type: vless
-  server: 104.24.197.20
-  port: 443
-  uuid: 67cf43da-d94c-4d93-b073-ac9305b16ec3
-  network: ws
-  tls: true
-  servername: rAyAn-cOnFiG-ca-1.pAriSa.dPdNs.oRg
-  ws-opts:
-    path: /ws
-    headers:
-      Host: rAyAn-cOnFiG-ca-1.pAriSa.dPdNs.oRg
-- name: OpenRay  CA-10261
-  type: vless
-  server: 172.67.66.177
-  port: 443
-  uuid: 67cf43da-d94c-4d93-b073-ac9305b16ec3
-  network: ws
-  tls: true
-  servername: rAyAn-cOnFiG-ca-1.pAriSa.dPdNs.oRg
-  ws-opts:
-    path: /ws
-    headers:
-      Host: rAyAn-cOnFiG-ca-1.pAriSa.dPdNs.oRg
 - name: OpenRay  CA-10389
   type: vmess
   server: 172.67.204.84
@@ -723,16 +699,6 @@ proxies:
       /eyJqdW5rIjoibUVFb0RQcHJZZSIsInByb3RvY29sIjoidmwiLCJtb2RlIjoicHJveHlpcCIsInBhbmVsSVBzIjpbIjM0LjI1My4yMzQuNjIiXX0=?ed=2560
     headers:
       Host: 019.electrocellco-cf-019.workers.dev
-- name: OpenRay  CA-11019
-  type: vless
-  server: 104.17.148.22
-  port: 80
-  uuid: 45d44338-30d2-439c-b765-90cb16f581c9
-  network: ws
-  ws-opts:
-    path: /?ed=2560
-    headers:
-      Host: broad-lake-d615.hegegi9101.workers.dev
 - name: OpenRay  CA-11025
   type: vless
   server: 104.18.45.47
@@ -778,16 +744,6 @@ proxies:
       /?ed=2560Join---V2rayBaaz---@V2rayBaaz---@V2rayBaaz---@V2rayBaaz---@V2rayBaaz---@V2rayBaaz---@V2rayBaaz---@V2rayBaaz---@V2rayBaaz---@V2rayBaaz---@V2rayBaaz---@V2rayBaaz
     headers:
       Host: wetfleagidc-8tsbi8xd-v3.wet-flea-gidc.workers.dev
-- name: OpenRay  CA-11034
-  type: vless
-  server: 104.17.147.22
-  port: 80
-  uuid: 45d44338-30d2-439c-b765-90cb16f581c9
-  network: ws
-  ws-opts:
-    path: /?ed=2560
-    headers:
-      Host: broad-lake-d615.hegegi9101.workers.dev
 - name: OpenRay  CA-11065
   type: vless
   server: 104.18.14.19
@@ -5644,19 +5600,6 @@ proxies:
     public-key: mLmBhbVFfNuo2eUgBh6r9-5Koz9mUCn3aSzlR6IejUg
     short-id: f79448a30d
   client-fingerprint: chrome
-- name: OpenRay  RU-958
-  type: vless
-  server: 84.201.130.224
-  port: 443
-  uuid: bcf31ced-07e7-4bd3-ae6d-9280d9a47834
-  network: tcp
-  flow: xtls-rprx-vision
-  tls: true
-  servername: io.ozone.ru
-  reality-opts:
-    public-key: J5ITJbg5FQFembAfkogKHHQB6DigsFXQxK7xu-QMWUs
-    short-id: a20d3ed244c76426
-  client-fingerprint: edge
 - name: OpenRay  RU-962
   type: vless
   server: nsk.geodema.network
@@ -6128,7 +6071,7 @@ proxies:
       Host: dv4.789900.xyz
 - name: OpenRay  KR-53
   type: vmess
-  server: 43.203.240.164
+  server: 43.203.193.75
   port: 8686
   uuid: 1a17b19d-4896-4531-af79-6e91d8ef8228
   alterId: 0
@@ -6335,7 +6278,7 @@ proxies:
   client-fingerprint: chrome
 - name: OpenRay  JP-417
   type: vmess
-  server: 52.198.100.101
+  server: 54.249.109.74
   port: 8686
   uuid: 1a17b19d-4896-4531-af79-6e91d8ef8228
   alterId: 0
@@ -10150,8 +10093,6 @@ proxy-groups:
   - OpenRay  CA-8844
   - OpenRay  CA-8856
   - OpenRay  CA-9952
-  - OpenRay  CA-10260
-  - OpenRay  CA-10261
   - OpenRay  CA-10389
   - OpenRay  CA-10637
   - OpenRay  CA-10643
@@ -10181,12 +10122,10 @@ proxy-groups:
   - OpenRay  CA-10991
   - OpenRay  CA-11006
   - OpenRay  CA-11010
-  - OpenRay  CA-11019
   - OpenRay  CA-11025
   - OpenRay  CA-11026
   - OpenRay  CA-11032
   - OpenRay  CA-11033
-  - OpenRay  CA-11034
   - OpenRay  CA-11065
   - OpenRay  CA-11085
   - OpenRay  CA-11099
@@ -10602,7 +10541,6 @@ proxy-groups:
   - OpenRay  RU-953
   - OpenRay  RU-954
   - OpenRay  RU-957
-  - OpenRay  RU-958
   - OpenRay  RU-962
   - OpenRay  RU-965
   - OpenRay  RU-967
@@ -11041,8 +10979,6 @@ proxy-groups:
   - OpenRay  CA-8844
   - OpenRay  CA-8856
   - OpenRay  CA-9952
-  - OpenRay  CA-10260
-  - OpenRay  CA-10261
   - OpenRay  CA-10389
   - OpenRay  CA-10637
   - OpenRay  CA-10643
@@ -11072,12 +11008,10 @@ proxy-groups:
   - OpenRay  CA-10991
   - OpenRay  CA-11006
   - OpenRay  CA-11010
-  - OpenRay  CA-11019
   - OpenRay  CA-11025
   - OpenRay  CA-11026
   - OpenRay  CA-11032
   - OpenRay  CA-11033
-  - OpenRay  CA-11034
   - OpenRay  CA-11065
   - OpenRay  CA-11085
   - OpenRay  CA-11099
@@ -11493,7 +11427,6 @@ proxy-groups:
   - OpenRay  RU-953
   - OpenRay  RU-954
   - OpenRay  RU-957
-  - OpenRay  RU-958
   - OpenRay  RU-962
   - OpenRay  RU-965
   - OpenRay  RU-967
