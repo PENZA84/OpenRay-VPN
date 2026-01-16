@@ -807,6 +807,16 @@ proxies:
     path: /
     headers:
       Host: cloud.v2proservice.shop
+- name: OpenRay  CA-11219
+  type: vless
+  server: 104.16.94.86
+  port: 80
+  uuid: 68aeb4a6-8e12-4f10-b60b-11518a5b9d36
+  network: ws
+  ws-opts:
+    path: /?ed=2048
+    headers:
+      Host: qxz08.indevs.in
 - name: OpenRay Dynamic-95
   type: vless
   server: www.udemy.com
@@ -5802,6 +5812,30 @@ proxies:
     public-key: R2gKMF0Tetlnesc1pPkZH9NaOeehw-f5_U9JKG_cLjU
     short-id: c588
   client-fingerprint: chrome
+- name: OpenRay  JP-422
+  type: vless
+  server: 8.209.231.19
+  port: 8443
+  uuid: e258977b-e413-4718-a3af-02d75492c349
+  network: ws
+  tls: true
+  servername: ww23.sgxaniu.qzz.io
+  ws-opts:
+    path: /?ed=2560
+    headers:
+      Host: ww23.sgxaniu.qzz.io
+- name: OpenRay  JP-423
+  type: vmess
+  server: 18.181.193.184
+  port: 8686
+  uuid: 1a17b19d-4896-4531-af79-6e91d8ef8228
+  alterId: 0
+  cipher: auto
+  network: ws
+  ws-opts:
+    path: /
+    headers:
+      Host: end-gfw.com
 - name: OpenRay  FR-5
   type: vless
   server: 141.101.120.232
@@ -8722,30 +8756,6 @@ proxies:
     path: /vless/
     headers:
       Host: pq-brazil1.09vpn.com
-- name: OpenRay  BR-17
-  type: vmess
-  server: pq-brazil1.09vpn.com
-  port: 80
-  uuid: 24b6bbfb-9b27-4f17-bd32-67523bf487d9
-  alterId: 0
-  cipher: auto
-  network: ws
-  ws-opts:
-    path: /vmess/
-    headers:
-      Host: pq-brazil1.09vpn.com
-- name: OpenRay  BR-18
-  type: vless
-  server: pq-brazil1.09vpn.com
-  port: 8443
-  uuid: e1628f52-dcbd-417c-90cc-e9266b28ea38
-  network: ws
-  tls: true
-  servername: pq-brazil1.09vpn.com
-  ws-opts:
-    path: /vless/
-    headers:
-      Host: pq-brazil1.09vpn.com
 - name: OpenRay  BR-19
   type: vmess
   server: 95.164.4.88
@@ -8943,14 +8953,6 @@ proxies:
     path: /
     headers:
       Host: n1761214915.mv7wh.tech
-- name: OpenRay  HK-83
-  type: vmess
-  server: 8.218.105.196
-  port: 52752
-  uuid: 925bdbf5-72be-4437-bebf-441c61089f6b
-  alterId: 0
-  cipher: auto
-  network: none
 - name: OpenRay  HK-84
   type: vless
   server: 47.239.69.137
@@ -9633,6 +9635,7 @@ proxy-groups:
   - OpenRay  CA-11205
   - OpenRay  CA-11209
   - OpenRay  CA-11210
+  - OpenRay  CA-11219
   - OpenRay Dynamic-95
   - OpenRay Dynamic-118
   - OpenRay Dynamic-184
@@ -10055,6 +10058,8 @@ proxy-groups:
   - OpenRay  JP-418
   - OpenRay  JP-419
   - OpenRay  JP-421
+  - OpenRay  JP-422
+  - OpenRay  JP-423
   - OpenRay  FR-5
   - OpenRay  FR-6
   - OpenRay  FR-11
@@ -10342,8 +10347,6 @@ proxy-groups:
   - OpenRay  BR-12
   - OpenRay  BR-14
   - OpenRay  BR-16
-  - OpenRay  BR-17
-  - OpenRay  BR-18
   - OpenRay  BR-19
   - OpenRay  BR-20
   - OpenRay  TR-4
@@ -10360,7 +10363,6 @@ proxy-groups:
   - OpenRay  HK-78
   - OpenRay  HK-81
   - OpenRay  HK-82
-  - OpenRay  HK-83
   - OpenRay  HK-84
   - OpenRay  HK-86
   - OpenRay  CH-2
@@ -10483,6 +10485,7 @@ proxy-groups:
   - OpenRay  CA-11205
   - OpenRay  CA-11209
   - OpenRay  CA-11210
+  - OpenRay  CA-11219
   - OpenRay Dynamic-95
   - OpenRay Dynamic-118
   - OpenRay Dynamic-184
@@ -10905,6 +10908,8 @@ proxy-groups:
   - OpenRay  JP-418
   - OpenRay  JP-419
   - OpenRay  JP-421
+  - OpenRay  JP-422
+  - OpenRay  JP-423
   - OpenRay  FR-5
   - OpenRay  FR-6
   - OpenRay  FR-11
@@ -11192,8 +11197,6 @@ proxy-groups:
   - OpenRay  BR-12
   - OpenRay  BR-14
   - OpenRay  BR-16
-  - OpenRay  BR-17
-  - OpenRay  BR-18
   - OpenRay  BR-19
   - OpenRay  BR-20
   - OpenRay  TR-4
@@ -11210,7 +11213,6 @@ proxy-groups:
   - OpenRay  HK-78
   - OpenRay  HK-81
   - OpenRay  HK-82
-  - OpenRay  HK-83
   - OpenRay  HK-84
   - OpenRay  HK-86
   - OpenRay  CH-2
