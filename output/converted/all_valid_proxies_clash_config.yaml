@@ -2851,6 +2851,18 @@ proxies:
     public-key: 8rY88SlU9pLlCVuiMfyVQlmiGeJ4KFh-t9wkL9d43yM
     short-id: ae1c0be4d8fdd421
   client-fingerprint: chrome
+- name: OpenRay  DE-3519
+  type: vless
+  server: 95.179.168.188
+  port: 443
+  uuid: 1a25f8ad-cad2-4e93-b5bf-34e42bcac02a
+  network: ws
+  tls: true
+  servername: sni.111000.de5.net
+  ws-opts:
+    path: /?ed=2560
+    headers:
+      Host: sni.111000.de5.net
 - name: OpenRay  US-2325
   type: vless
   server: 104.17.134.117
@@ -4793,7 +4805,7 @@ proxies:
       Host: dv4.789900.xyz
 - name: OpenRay  KR-56
   type: vmess
-  server: 3.36.58.13
+  server: 3.36.26.176
   port: 8686
   uuid: 1a17b19d-4896-4531-af79-6e91d8ef8228
   alterId: 0
@@ -8961,6 +8973,7 @@ proxy-groups:
   - OpenRay  DE-3514
   - OpenRay  DE-3517
   - OpenRay  DE-3518
+  - OpenRay  DE-3519
   - OpenRay  US-2325
   - OpenRay  US-2737
   - OpenRay  US-2744
@@ -9746,6 +9759,7 @@ proxy-groups:
   - OpenRay  DE-3514
   - OpenRay  DE-3517
   - OpenRay  DE-3518
+  - OpenRay  DE-3519
   - OpenRay  US-2325
   - OpenRay  US-2737
   - OpenRay  US-2744
