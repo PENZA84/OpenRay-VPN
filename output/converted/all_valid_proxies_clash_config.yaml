@@ -2446,18 +2446,6 @@ proxies:
     path: /?ed=2560
     headers:
       Host: sni.111000.de5.net
-- name: OpenRay  DE-3520
-  type: vless
-  server: 82.115.31.209
-  port: 20531
-  uuid: 00000000-0000-4000-8000-000000000000
-  network: ws
-  tls: true
-  servername: miku.mikuru.ip-ddns.com
-  ws-opts:
-    path: /@Marisa_kristi
-    headers:
-      Host: miku.mikuru.ip-ddns.com
 - name: OpenRay  DE-3521
   type: vless
   server: 91.99.218.107
@@ -5084,7 +5072,7 @@ proxies:
   client-fingerprint: chrome
 - name: OpenRay  KR-57
   type: vmess
-  server: 13.125.161.194
+  server: 3.38.96.249
   port: 8686
   uuid: 1a17b19d-4896-4531-af79-6e91d8ef8228
   alterId: 0
@@ -5273,6 +5261,18 @@ proxies:
     public-key: R2gKMF0Tetlnesc1pPkZH9NaOeehw-f5_U9JKG_cLjU
     short-id: c588
   client-fingerprint: chrome
+- name: OpenRay  JP-422
+  type: vmess
+  server: 54.250.148.157
+  port: 8686
+  uuid: 1a17b19d-4896-4531-af79-6e91d8ef8228
+  alterId: 0
+  cipher: auto
+  network: ws
+  ws-opts:
+    path: /
+    headers:
+      Host: end-gfw.com
 - name: OpenRay  FR-5
   type: vless
   server: 141.101.120.232
@@ -9529,7 +9529,6 @@ proxy-groups:
   - OpenRay  DE-3506
   - OpenRay  DE-3508
   - OpenRay  DE-3519
-  - OpenRay  DE-3520
   - OpenRay  DE-3521
   - OpenRay  DE-3526
   - OpenRay  DE-3527
@@ -9765,6 +9764,7 @@ proxy-groups:
   - OpenRay  JP-417
   - OpenRay  JP-418
   - OpenRay  JP-421
+  - OpenRay  JP-422
   - OpenRay  FR-5
   - OpenRay  FR-6
   - OpenRay  FR-11
@@ -10365,7 +10365,6 @@ proxy-groups:
   - OpenRay  DE-3506
   - OpenRay  DE-3508
   - OpenRay  DE-3519
-  - OpenRay  DE-3520
   - OpenRay  DE-3521
   - OpenRay  DE-3526
   - OpenRay  DE-3527
@@ -10601,6 +10600,7 @@ proxy-groups:
   - OpenRay  JP-417
   - OpenRay  JP-418
   - OpenRay  JP-421
+  - OpenRay  JP-422
   - OpenRay  FR-5
   - OpenRay  FR-6
   - OpenRay  FR-11
