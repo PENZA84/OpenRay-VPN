@@ -5388,7 +5388,7 @@ proxies:
       Host: dv4.789900.xyz
 - name: OpenRay  KR-58
   type: vmess
-  server: 54.180.133.107
+  server: 3.38.117.79
   port: 8686
   uuid: 1a17b19d-4896-4531-af79-6e91d8ef8228
   alterId: 0
@@ -9115,14 +9115,6 @@ proxies:
     path: /
     headers:
       Host: ww3.xaniujp1.qzz.io
-- name: OpenRay  HK-100
-  type: vmess
-  server: 149.88.95.217
-  port: 35760
-  uuid: 17e96792-d8c3-4741-9c34-e5d1c11d754f
-  alterId: 0
-  cipher: auto
-  network: tcp
 - name: OpenRay  HK-102
   type: vmess
   server: v12.hdacd.com
@@ -9408,6 +9400,19 @@ proxies:
   reality-opts:
     public-key: 9ajY_OBOn5CCPnCJTPjxg6J3IWE8uJYAiWQvG9CBGjU
     short-id: 00684d2eae2cdd16
+  client-fingerprint: chrome
+- name: OpenRay  KZ-14
+  type: vless
+  server: 91.217.10.166
+  port: 9443
+  uuid: 26a30929-215d-4e65-b07d-481985430370
+  network: tcp
+  flow: xtls-rprx-vision
+  tls: true
+  servername: api.avito.ru
+  reality-opts:
+    public-key: WvNaAxI0W__qfUKbtysH4IwF155YENlv3PG6crCmPkA
+    short-id: ''
   client-fingerprint: chrome
 - name: OpenRay  AT-1
   type: vless
@@ -10637,7 +10642,6 @@ proxy-groups:
   - OpenRay  HK-97
   - OpenRay  HK-98
   - OpenRay  HK-99
-  - OpenRay  HK-100
   - OpenRay  HK-102
   - OpenRay  HK-103
   - OpenRay  HK-104
@@ -10665,6 +10669,7 @@ proxy-groups:
   - OpenRay  KZ-11
   - OpenRay  KZ-12
   - OpenRay  KZ-13
+  - OpenRay  KZ-14
   - OpenRay  AT-1
   - OpenRay  AT-2
   - OpenRay  AT-3
@@ -11521,7 +11526,6 @@ proxy-groups:
   - OpenRay  HK-97
   - OpenRay  HK-98
   - OpenRay  HK-99
-  - OpenRay  HK-100
   - OpenRay  HK-102
   - OpenRay  HK-103
   - OpenRay  HK-104
@@ -11549,6 +11553,7 @@ proxy-groups:
   - OpenRay  KZ-11
   - OpenRay  KZ-12
   - OpenRay  KZ-13
+  - OpenRay  KZ-14
   - OpenRay  AT-1
   - OpenRay  AT-2
   - OpenRay  AT-3
