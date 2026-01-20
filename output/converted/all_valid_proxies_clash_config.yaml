@@ -684,18 +684,6 @@ proxies:
     path: /?ed=2560
     headers:
       Host: go-79m.pages.dev
-- name: OpenRay  CA-11273
-  type: vless
-  server: itta.mobato-mobile.com
-  port: 443
-  uuid: 93eea243-b181-4327-b417-9627b5c9662d
-  network: ws
-  tls: true
-  servername: a5.marandcity.com
-  ws-opts:
-    path: /H4VHCWw22HBhURNoaUNOtz
-    headers:
-      Host: a5.marandcity.com
 - name: OpenRay  CA-11287
   type: vless
   server: 172.67.153.253
@@ -778,6 +766,18 @@ proxies:
     path: /?ed=2560
     headers:
       Host: shomal-g74f3znf-v2.shomal-321.workers.dev
+- name: OpenRay  CA-11303
+  type: vless
+  server: irde.gamaspacy.com
+  port: 443
+  uuid: 807ede8c-ec78-4a5a-ac7a-a81c23387d0d
+  network: ws
+  tls: true
+  servername: vip.gamaspacy.com
+  ws-opts:
+    path: /ws?ed=2560
+    headers:
+      Host: vip.gamaspacy.com
 - name: OpenRay Dynamic-95
   type: vless
   server: www.udemy.com
@@ -2730,6 +2730,44 @@ proxies:
     path: /
     headers:
       Host: cdd.farcadezero.ir
+- name: 'OpenRay Dynamic-11302 #3'
+  type: vless
+  server: chatgpt.com
+  port: 443
+  uuid: ebf0fd81-e716-431b-b80b-0d4f4acdeb20
+  network: ws
+  tls: true
+  servername: 639035008263561570.yaris-amsjt.info
+  ws-opts:
+    path: /gbhabhws
+    headers:
+      Host: 639035008263561570.yaris-amsjt.info
+- name: 'OpenRay Dynamic-11304 #2'
+  type: vmess
+  server: chatgpt.com
+  port: 443
+  uuid: 235a5c32-da94-4b9e-ace1-91e5c0ee9dda
+  alterId: 0
+  cipher: auto
+  network: ws
+  tls: true
+  servername: S1.shahanpanel.link
+  ws-opts:
+    path: /
+    headers:
+      Host: chatgpt.com
+- name: OpenRay Dynamic-11305
+  type: vless
+  server: chatgpt.com
+  port: 2096
+  uuid: ca8459e8-bf6a-4bc8-95b3-4275842210db
+  network: ws
+  tls: true
+  servername: arbaba.mietublglass.ir
+  ws-opts:
+    path: /@ArbabaVPN
+    headers:
+      Host: arbaba.mietublglass.ir
 - name: OpenRay  DE-2971
   type: vless
   server: 188.34.193.153
@@ -4746,12 +4784,6 @@ proxies:
   port: 29249
   uuid: 8fd631d9-16e1-4ec2-ae04-4ad30fe9770a
   network: tcp
-- name: OpenRay  FI-144
-  type: vless
-  server: 135.181.251.219
-  port: 35930
-  uuid: 7915835e-9c4f-4893-860f-ac19af0f59cd
-  network: tcp
 - name: OpenRay  FI-145
   type: vless
   server: 157.180.112.51
@@ -5754,18 +5786,6 @@ proxies:
     public-key: _1CdC4TRCkeTD3sHtnnZo2kkCGZkbYzLO2I-mJsWvmk
     short-id: e3b1c4d5a6f70912
   client-fingerprint: chrome
-- name: OpenRay  RU-1187
-  type: vless
-  server: 51.250.54.138
-  port: 8443
-  uuid: 87d58e85-a4b3-4187-9fb7-6f0a73b21a6b
-  network: grpc
-  tls: true
-  servername: ads.x5.ru
-  reality-opts:
-    public-key: J5ITJbg5FQFembAfkogKHHQB6DigsFXQxK7xu-QMWUs
-    short-id: 6b2f4e6ac9b1d2f0
-  client-fingerprint: chrome
 - name: OpenRay  RU-1188
   type: vless
   server: 109.120.189.154
@@ -6516,6 +6536,18 @@ proxies:
     public-key: PPZbDAYSwCYnPCF8BxguTFfAAZTnLnzpsHePCkGZYxo
     short-id: '34'
   client-fingerprint: chrome
+- name: OpenRay  KR-60
+  type: vmess
+  server: 3.39.238.226
+  port: 8686
+  uuid: 1a17b19d-4896-4531-af79-6e91d8ef8228
+  alterId: 0
+  cipher: auto
+  network: ws
+  ws-opts:
+    path: /
+    headers:
+      Host: end-gfw.com
 - name: OpenRay  JP-343
   type: vmess
   server: n1753598445.74qxv.top
@@ -6530,20 +6562,6 @@ proxies:
     path: /
     headers:
       Host: n1753598445.74qxv.top
-- name: OpenRay  JP-371
-  type: vmess
-  server: n1753598451.74qxv.top
-  port: 443
-  uuid: 9798678f-5b8c-4ff1-bbdd-b9b5c1539de0
-  alterId: 0
-  cipher: auto
-  network: ws
-  tls: true
-  servername: n1753598451.74qxv.top
-  ws-opts:
-    path: /
-    headers:
-      Host: n1753598451.74qxv.top
 - name: OpenRay  JP-373
   type: vmess
   server: 47.74.1.191
@@ -10939,7 +10957,6 @@ proxy-groups:
   - OpenRay  CA-11254
   - OpenRay  CA-11266
   - OpenRay  CA-11268
-  - OpenRay  CA-11273
   - OpenRay  CA-11287
   - OpenRay  CA-11288
   - OpenRay  CA-11289
@@ -10948,6 +10965,7 @@ proxy-groups:
   - OpenRay  CA-11293
   - OpenRay  CA-11294
   - OpenRay  CA-11301
+  - OpenRay  CA-11303
   - OpenRay Dynamic-95
   - OpenRay Dynamic-118
   - OpenRay Dynamic-184
@@ -11113,6 +11131,9 @@ proxy-groups:
   - OpenRay Dynamic-11124
   - 'OpenRay Dynamic-11302 #2'
   - 'OpenRay Dynamic-11303 #2'
+  - 'OpenRay Dynamic-11302 #3'
+  - 'OpenRay Dynamic-11304 #2'
+  - OpenRay Dynamic-11305
   - OpenRay  DE-2971
   - OpenRay  DE-2975
   - OpenRay  DE-3173
@@ -11294,7 +11315,6 @@ proxy-groups:
   - OpenRay  FI-140
   - OpenRay  FI-142
   - OpenRay  FI-143
-  - OpenRay  FI-144
   - OpenRay  FI-145
   - OpenRay  FI-147
   - OpenRay  RU-725
@@ -11375,7 +11395,6 @@ proxy-groups:
   - OpenRay  RU-1184
   - OpenRay  RU-1185
   - OpenRay  RU-1186
-  - OpenRay  RU-1187
   - OpenRay  RU-1188
   - OpenRay  RU-1189
   - OpenRay  RU-1190
@@ -11435,8 +11454,8 @@ proxy-groups:
   - OpenRay  KR-57
   - OpenRay  KR-58
   - OpenRay  KR-59
+  - OpenRay  KR-60
   - OpenRay  JP-343
-  - OpenRay  JP-371
   - OpenRay  JP-373
   - OpenRay  JP-390
   - OpenRay  JP-392
@@ -11910,7 +11929,6 @@ proxy-groups:
   - OpenRay  CA-11254
   - OpenRay  CA-11266
   - OpenRay  CA-11268
-  - OpenRay  CA-11273
   - OpenRay  CA-11287
   - OpenRay  CA-11288
   - OpenRay  CA-11289
@@ -11919,6 +11937,7 @@ proxy-groups:
   - OpenRay  CA-11293
   - OpenRay  CA-11294
   - OpenRay  CA-11301
+  - OpenRay  CA-11303
   - OpenRay Dynamic-95
   - OpenRay Dynamic-118
   - OpenRay Dynamic-184
@@ -12084,6 +12103,9 @@ proxy-groups:
   - OpenRay Dynamic-11124
   - 'OpenRay Dynamic-11302 #2'
   - 'OpenRay Dynamic-11303 #2'
+  - 'OpenRay Dynamic-11302 #3'
+  - 'OpenRay Dynamic-11304 #2'
+  - OpenRay Dynamic-11305
   - OpenRay  DE-2971
   - OpenRay  DE-2975
   - OpenRay  DE-3173
@@ -12265,7 +12287,6 @@ proxy-groups:
   - OpenRay  FI-140
   - OpenRay  FI-142
   - OpenRay  FI-143
-  - OpenRay  FI-144
   - OpenRay  FI-145
   - OpenRay  FI-147
   - OpenRay  RU-725
@@ -12346,7 +12367,6 @@ proxy-groups:
   - OpenRay  RU-1184
   - OpenRay  RU-1185
   - OpenRay  RU-1186
-  - OpenRay  RU-1187
   - OpenRay  RU-1188
   - OpenRay  RU-1189
   - OpenRay  RU-1190
@@ -12406,8 +12426,8 @@ proxy-groups:
   - OpenRay  KR-57
   - OpenRay  KR-58
   - OpenRay  KR-59
+  - OpenRay  KR-60
   - OpenRay  JP-343
-  - OpenRay  JP-371
   - OpenRay  JP-373
   - OpenRay  JP-390
   - OpenRay  JP-392
