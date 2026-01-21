@@ -3111,18 +3111,6 @@ proxies:
     path: /proxyip=sjc.o00o.ooo
     headers:
       Host: ss.cloudfront.ccwu.cc
-- name: OpenRay Dynamic-1258
-  type: vless
-  server: s60126.cdn.ngenix.net
-  port: 443
-  uuid: 4fe214fb-048e-431f-b939-4518dc9df6a2
-  network: ws
-  tls: true
-  servername: s60126.cdn.ngenix.net
-  ws-opts:
-    path: /stream/live/wWgdfFe54vc
-    headers:
-      Host: s60126.cdn.ngenix.net
 - name: OpenRay Dynamic-11353
   type: vless
   server: chatgpt.com
@@ -3223,6 +3211,62 @@ proxies:
     path: /
     headers:
       Host: ir2.airpanel.top
+- name: 'OpenRay Dynamic-11350 #3'
+  type: vless
+  server: chatgpt.com
+  port: 2087
+  uuid: d41d4d89-da8e-4ed0-8903-a2ffacc740ae
+  network: ws
+  tls: true
+  servername: app.v2plus.ovh
+  ws-opts:
+    path: /
+    headers:
+      Host: app.v2plus.ovh
+- name: OpenRay Dynamic-11126
+  type: vless
+  server: support.zoom.us
+  port: 80
+  uuid: 5037aef1-0090-4276-b519-643f99c0e58e
+  network: ws
+  ws-opts:
+    path: /TECH-SONIC-LK-FREE-V2RAY
+    headers:
+      Host: free-lk-server.techsonic.ggff.net
+- name: 'OpenRay Dynamic-11351 #3'
+  type: vless
+  server: chatgpt.com
+  port: 443
+  uuid: 4c52761a-a2ac-42db-b08c-e5295525e01a
+  network: ws
+  tls: true
+  servername: dead.imsoon.net
+  ws-opts:
+    path: /Telegram:@im_soon
+    headers:
+      Host: dead.imsoon.net.
+- name: 'OpenRay Dynamic-11352 #3'
+  type: vless
+  server: webmail.eclass.lk
+  port: 2096
+  uuid: b91217b6-02e6-44f9-be4d-a7990a2bc9d8
+  network: ws
+  tls: true
+  servername: free-lk-server.techsonic.ggff.net
+  ws-opts:
+    path: /TECH-SONIC-LK-FREE-V2RAY
+    headers:
+      Host: free-lk-server.techsonic.ggff.net
+- name: OpenRay Dynamic-11127
+  type: vless
+  server: partner.zoom.us
+  port: 80
+  uuid: 0e45ee2f-e9bc-4eaa-a4ff-2b42be1e0ae9
+  network: ws
+  ws-opts:
+    path: /TECH-SONIC-LK-FREE-V2RAY
+    headers:
+      Host: free-lk-server.techsonic.ggff.net
 - name: OpenRay  DE-2971
   type: vless
   server: 188.34.193.153
@@ -7077,7 +7121,7 @@ proxies:
       Host: dv4.789900.xyz
 - name: OpenRay  KR-63
   type: vmess
-  server: 13.124.129.110
+  server: 43.202.60.48
   port: 8686
   uuid: 1a17b19d-4896-4531-af79-6e91d8ef8228
   alterId: 0
@@ -7324,6 +7368,18 @@ proxies:
     path: /proxyip=sjc.o00o.ooo
     headers:
       Host: ss.cloudfront.ccwu.cc
+- name: OpenRay  JP-431
+  type: vmess
+  server: 35.77.88.78
+  port: 8686
+  uuid: 1a17b19d-4896-4531-af79-6e91d8ef8228
+  alterId: 0
+  cipher: auto
+  network: ws
+  ws-opts:
+    path: /
+    headers:
+      Host: end-gfw.com
 - name: OpenRay  FR-5
   type: vless
   server: 141.101.120.232
@@ -11555,6 +11611,19 @@ proxies:
     public-key: 9ajY_OBOn5CCPnCJTPjxg6J3IWE8uJYAiWQvG9CBGjU
     short-id: 00684d2eae2cdd16
   client-fingerprint: chrome
+- name: OpenRay  KZ-16
+  type: vless
+  server: 91.217.10.166
+  port: 9443
+  uuid: 00b6898c-90ce-4ba6-989e-4ad08239b2b2
+  network: tcp
+  flow: xtls-rprx-vision
+  tls: true
+  servername: api.avito.ru
+  reality-opts:
+    public-key: WvNaAxI0W__qfUKbtysH4IwF155YENlv3PG6crCmPkA
+    short-id: ''
+  client-fingerprint: chrome
 - name: OpenRay  AT-1
   type: vless
   server: 38.180.144.156
@@ -12326,7 +12395,6 @@ proxy-groups:
   - OpenRay Dynamic-11350
   - OpenRay Dynamic-11351
   - OpenRay Dynamic-11352
-  - OpenRay Dynamic-1258
   - OpenRay Dynamic-11353
   - OpenRay Dynamic-11354
   - 'OpenRay Dynamic-11350 #2'
@@ -12335,6 +12403,11 @@ proxy-groups:
   - 'OpenRay Dynamic-11353 #2'
   - 'OpenRay Dynamic-11354 #2'
   - OpenRay Dynamic-11355
+  - 'OpenRay Dynamic-11350 #3'
+  - OpenRay Dynamic-11126
+  - 'OpenRay Dynamic-11351 #3'
+  - 'OpenRay Dynamic-11352 #3'
+  - OpenRay Dynamic-11127
   - OpenRay  DE-2971
   - OpenRay  DE-2975
   - OpenRay  DE-3173
@@ -12683,6 +12756,7 @@ proxy-groups:
   - OpenRay  JP-428
   - OpenRay  JP-429
   - OpenRay  JP-430
+  - OpenRay  JP-431
   - OpenRay  FR-5
   - OpenRay  FR-6
   - OpenRay  FR-11
@@ -13084,6 +13158,7 @@ proxy-groups:
   - OpenRay  KZ-13
   - OpenRay  KZ-14
   - OpenRay  KZ-15
+  - OpenRay  KZ-16
   - OpenRay  AT-1
   - OpenRay  AT-2
   - OpenRay  AT-3
@@ -13388,7 +13463,6 @@ proxy-groups:
   - OpenRay Dynamic-11350
   - OpenRay Dynamic-11351
   - OpenRay Dynamic-11352
-  - OpenRay Dynamic-1258
   - OpenRay Dynamic-11353
   - OpenRay Dynamic-11354
   - 'OpenRay Dynamic-11350 #2'
@@ -13397,6 +13471,11 @@ proxy-groups:
   - 'OpenRay Dynamic-11353 #2'
   - 'OpenRay Dynamic-11354 #2'
   - OpenRay Dynamic-11355
+  - 'OpenRay Dynamic-11350 #3'
+  - OpenRay Dynamic-11126
+  - 'OpenRay Dynamic-11351 #3'
+  - 'OpenRay Dynamic-11352 #3'
+  - OpenRay Dynamic-11127
   - OpenRay  DE-2971
   - OpenRay  DE-2975
   - OpenRay  DE-3173
@@ -13745,6 +13824,7 @@ proxy-groups:
   - OpenRay  JP-428
   - OpenRay  JP-429
   - OpenRay  JP-430
+  - OpenRay  JP-431
   - OpenRay  FR-5
   - OpenRay  FR-6
   - OpenRay  FR-11
@@ -14146,6 +14226,7 @@ proxy-groups:
   - OpenRay  KZ-13
   - OpenRay  KZ-14
   - OpenRay  KZ-15
+  - OpenRay  KZ-16
   - OpenRay  AT-1
   - OpenRay  AT-2
   - OpenRay  AT-3
