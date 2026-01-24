@@ -213,6 +213,31 @@ def _sync_check_counts_with_available_file() -> None:
         log(f"⚠️ Failed to sync check_counts.json with all_valid_proxies.txt: {e}")
 
 
+def _cleanup_streaks(streaks: Dict[str, dict], current_proxies: List[str]) -> Dict[str, dict]:
+    """Remove streaks for hosts that are no longer in the current available proxies list."""
+    try:
+        current_hosts = set()
+        for u in current_proxies:
+            host = extract_host(u)
+            if host:
+                current_hosts.add(host)
+        
+        if not current_hosts:
+            return streaks
+            
+        old_count = len(streaks)
+        filtered_streaks = {h: r for h, r in streaks.items() if h in current_hosts}
+        new_count = len(filtered_streaks)
+        
+        if old_count != new_count:
+            log(f"🧹 Cleaned up streaks.json: {old_count} -> {new_count} hosts (Removed {old_count - new_count})")
+            
+        return filtered_streaks
+    except Exception as e:
+        log(f"⚠️ Failed to cleanup streaks: {e}")
+        return streaks
+
+
 def _write_top100_by_checks(active_proxies: List[str]) -> None:
     """Write top 100 most frequently checked proxies to main_top100_checked.txt.
     Prioritizes main scores, then iran scores as tiebreaker."""
@@ -812,6 +837,12 @@ def main() -> int:
                 else:
                     rec['streak'] = 0
                 streaks[host] = rec
+            
+            # Filter streaks to only keep hosts that are in the final available list
+            # This prevents streaks.json from growing indefinitely with expired proxies.
+            current_available = [ln.strip() for ln in read_lines(AVAILABLE_FILE) if ln.strip()]
+            streaks = _cleanup_streaks(streaks, current_available)
+            
             save_streaks(streaks)
     except Exception as e:
         log(f"Streaks update failed: {e}")

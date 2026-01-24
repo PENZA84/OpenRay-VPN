@@ -11,11 +11,9 @@ import struct
 import time
 from typing import Set
 
-# Add src to path
-sys.path.insert(0, 'src')
-
-import constants as C
-from io_ops import (
+# Import from src package
+import src.constants as C
+from src.io_ops import (
     load_tested_hashes,
     load_tested_hashes_optimized,
     migrate_to_optimized_format,

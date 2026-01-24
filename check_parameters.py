@@ -11,15 +11,8 @@ import socket
 import multiprocessing
 from concurrent.futures import ThreadPoolExecutor
 
-# Add src directory to path so we can import constants
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
-
-try:
-    from constants import *
-    print("✅ Successfully imported OpenRay constants")
-except ImportError as e:
-    print(f"❌ Failed to import constants: {e}")
-    sys.exit(1)
+# Import from src package
+from src.constants import *
 
 def check_network_connectivity():
     """Test basic network connectivity."""

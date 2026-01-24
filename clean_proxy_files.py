@@ -8,14 +8,8 @@ import re
 import sys
 from collections import Counter
 
-# Add src directory to path so we can import our functions
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
-
-try:
-    from common import get_proxy_connection_hash
-except ImportError as e:
-    print(f"❌ Failed to import proxy functions: {e}")
-    sys.exit(1)
+# Import from src package
+from src.common import get_proxy_connection_hash
 
 def clean_file(file_path, output_path=None):
     """Clean a proxy file by removing Git conflicts and duplicates"""
