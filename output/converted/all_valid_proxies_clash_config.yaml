@@ -3632,6 +3632,18 @@ proxies:
     public-key: 2zN5MhusgST2q3NBD1gglc6xTaoTPP9Tmjb9k374QCw
     short-id: ''
   client-fingerprint: chrome
+- name: OpenRay  DE-3683
+  type: vless
+  server: 178.162.241.240
+  port: 8080
+  uuid: 87f6d03e-4e3f-47b7-a847-bd8ab4f18874
+  network: tcp
+  tls: true
+  servername: www.latimes.com
+  reality-opts:
+    public-key: 6hyg8ZSVHhUnbk_o9B_0n2Dmxbu7uYMk8fAZdjw_tlU
+    short-id: a5aaef40e6
+  client-fingerprint: firefox
 - name: OpenRay  US-2325
   type: vless
   server: 104.17.134.117
@@ -5574,6 +5586,16 @@ proxies:
     path: /Ov7HrgwlEcRugowKV
     headers:
       Host: 107.174.82.102.sslip.io
+- name: OpenRay  US-11384
+  type: vless
+  server: comando.fisifisi.com
+  port: 80
+  uuid: 531a8ab1-4993-4f80-8086-57d71206e5e5
+  network: ws
+  ws-opts:
+    path: /ed=2560
+    headers:
+      Host: mokorofi.kamacp.com
 - name: OpenRay  NL-4
   type: vless
   server: 51.158.206.96
@@ -6765,6 +6787,18 @@ proxies:
     public-key: yvx-QySsUrrLYJexc-orM8QDkLYngqbN6T4gu4GkBQw
     short-id: ''
   client-fingerprint: chrome
+- name: OpenRay  NL-412
+  type: vmess
+  server: 103.215.238.62
+  port: 80
+  uuid: 89e25562-d0f1-4f54-8afb-6ee374e30fbb
+  alterId: 0
+  cipher: auto
+  network: ws
+  ws-opts:
+    path: /
+    headers:
+      Host: 103.215.238.62
 - name: OpenRay  FI-56
   type: vless
   server: 135.181.155.97
@@ -8452,6 +8486,18 @@ proxies:
     path: /0c8f3e29-4ec9-4ba6-a6ef-4487873f5d05-vm
     headers:
       Host: dv4.789900.xyz
+- name: OpenRay  KR-77
+  type: vmess
+  server: 54.180.245.85
+  port: 8686
+  uuid: 1a17b19d-4896-4531-af79-6e91d8ef8228
+  alterId: 0
+  cipher: auto
+  network: ws
+  ws-opts:
+    path: /
+    headers:
+      Host: end-gfw.com
 - name: OpenRay  JP-343
   type: vmess
   server: n1753598445.74qxv.top
@@ -8746,6 +8792,18 @@ proxies:
 - name: OpenRay  JP-447
   type: vmess
   server: 54.248.148.112
+  port: 8686
+  uuid: 1a17b19d-4896-4531-af79-6e91d8ef8228
+  alterId: 0
+  cipher: auto
+  network: ws
+  ws-opts:
+    path: /
+    headers:
+      Host: end-gfw.com
+- name: OpenRay  JP-448
+  type: vmess
+  server: 18.182.54.20
   port: 8686
   uuid: 1a17b19d-4896-4531-af79-6e91d8ef8228
   alterId: 0
@@ -9088,6 +9146,18 @@ proxies:
   alterId: 0
   cipher: auto
   network: raw
+- name: OpenRay  FR-445
+  type: vless
+  server: 157.173.127.225
+  port: 443
+  uuid: 11beaf11-726d-4c11-8ce9-27308c1c608c
+  network: tcp
+  tls: true
+  servername: analytics.google.com
+  reality-opts:
+    public-key: v3EwzA9RIIh5Ndxm-gypRY6RCJhOpQ-2WO7KaH8nsC8
+    short-id: eab26c4a32
+  client-fingerprint: random
 - name: OpenRay  PL-83
   type: vless
   server: 151.115.96.243
@@ -12337,6 +12407,7 @@ proxy-groups:
   - OpenRay  DE-3680
   - OpenRay  DE-3681
   - OpenRay  DE-3682
+  - OpenRay  DE-3683
   - OpenRay  US-2325
   - OpenRay  US-2737
   - OpenRay  US-2744
@@ -12502,6 +12573,7 @@ proxy-groups:
   - OpenRay  US-11376
   - OpenRay  US-11377
   - OpenRay  US-11378
+  - OpenRay  US-11384
   - OpenRay  NL-4
   - OpenRay  NL-6
   - OpenRay  NL-7
@@ -12596,6 +12668,7 @@ proxy-groups:
   - OpenRay  NL-409
   - OpenRay  NL-410
   - OpenRay  NL-411
+  - OpenRay  NL-412
   - OpenRay  FI-56
   - OpenRay  FI-57
   - OpenRay  FI-75
@@ -12729,6 +12802,7 @@ proxy-groups:
   - OpenRay  KR-74
   - OpenRay  KR-75
   - OpenRay  KR-76
+  - OpenRay  KR-77
   - OpenRay  JP-343
   - OpenRay  JP-390
   - OpenRay  JP-422
@@ -12753,6 +12827,7 @@ proxy-groups:
   - OpenRay  JP-445
   - OpenRay  JP-446
   - OpenRay  JP-447
+  - OpenRay  JP-448
   - OpenRay  FR-298
   - OpenRay  FR-300
   - OpenRay  FR-310
@@ -12780,6 +12855,7 @@ proxy-groups:
   - OpenRay  FR-442
   - OpenRay  FR-443
   - OpenRay  FR-444
+  - OpenRay  FR-445
   - OpenRay  PL-83
   - OpenRay  PL-137
   - OpenRay  PL-168
@@ -13327,6 +13403,7 @@ proxy-groups:
   - OpenRay  DE-3680
   - OpenRay  DE-3681
   - OpenRay  DE-3682
+  - OpenRay  DE-3683
   - OpenRay  US-2325
   - OpenRay  US-2737
   - OpenRay  US-2744
@@ -13492,6 +13569,7 @@ proxy-groups:
   - OpenRay  US-11376
   - OpenRay  US-11377
   - OpenRay  US-11378
+  - OpenRay  US-11384
   - OpenRay  NL-4
   - OpenRay  NL-6
   - OpenRay  NL-7
@@ -13586,6 +13664,7 @@ proxy-groups:
   - OpenRay  NL-409
   - OpenRay  NL-410
   - OpenRay  NL-411
+  - OpenRay  NL-412
   - OpenRay  FI-56
   - OpenRay  FI-57
   - OpenRay  FI-75
@@ -13719,6 +13798,7 @@ proxy-groups:
   - OpenRay  KR-74
   - OpenRay  KR-75
   - OpenRay  KR-76
+  - OpenRay  KR-77
   - OpenRay  JP-343
   - OpenRay  JP-390
   - OpenRay  JP-422
@@ -13743,6 +13823,7 @@ proxy-groups:
   - OpenRay  JP-445
   - OpenRay  JP-446
   - OpenRay  JP-447
+  - OpenRay  JP-448
   - OpenRay  FR-298
   - OpenRay  FR-300
   - OpenRay  FR-310
@@ -13770,6 +13851,7 @@ proxy-groups:
   - OpenRay  FR-442
   - OpenRay  FR-443
   - OpenRay  FR-444
+  - OpenRay  FR-445
   - OpenRay  PL-83
   - OpenRay  PL-137
   - OpenRay  PL-168
