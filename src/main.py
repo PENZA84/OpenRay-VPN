@@ -22,6 +22,7 @@ from .constants import (
     STAGE3_WORKERS,
     NEW_URIS_LIMIT_ENABLED,
     NEW_URIS_LIMIT,
+    EXISTING_PROXY_FAILURE_LIMIT,
 )
 from .geo import _build_country_counters, _country_flag
 from .grouping import regroup_available_by_country, write_grouped_outputs
@@ -449,7 +450,7 @@ def main() -> int:
                     subset = alive # [:int(STAGE3_MAX)]
                     kept_subset: List[str] = []
 
-                    def _core_check_with_retry(u: str) -> Optional[str]:
+                    def _core_check_with_retry(u: str) -> Tuple[str, bool]:
                         # For existing proxies, we are more lenient and try up to 5 times
                         # to avoid dropping them due to transient issues.
                         max_attempts = 1
@@ -458,21 +459,47 @@ def main() -> int:
                                 # Slightly longer timeout for existing proxies to be sure
                                 res = validate_with_v2ray_core(u, timeout_s=20)
                                 if res is True:
-                                    return u
+                                    return u, True
                             except Exception:
                                 pass
                             
                             if attempt < max_attempts - 1:
                                 # Progressive delay between retries
                                 time.sleep(2.0 * (attempt + 1))
-                        return None
+                        return u, False
 
                     workers = int(STAGE3_WORKERS)
                     with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as pool2:
                         print("Start Stage 3 (with retries) for existing proxies")
-                        for r in progress(pool2.map(_core_check_with_retry, subset), total=len(subset)):
-                            if r is not None:
-                                kept_subset.append(r)
+                        for u, success in progress(pool2.map(_core_check_with_retry, subset), total=len(subset)):
+                            h = host_map_existing.get(u)
+                            if success:
+                                kept_subset.append(u)
+                                if h:
+                                    if h not in streaks:
+                                        streaks[h] = {'streak': 0, 'last_test': 0, 'last_success': 0, 'failure_count': 0}
+                                    streaks[h]['failure_count'] = 0
+                            else:
+                                if h:
+                                    if h not in streaks:
+                                        streaks[h] = {'streak': 0, 'last_test': 0, 'last_success': 0, 'failure_count': 0}
+                                    
+                                    # Ensure failure_count exists
+                                    curr_fails = streaks[h].get('failure_count', 0)
+                                    streaks[h]['failure_count'] = curr_fails + 1
+                                    
+                                    if streaks[h]['failure_count'] < int(EXISTING_PROXY_FAILURE_LIMIT):
+                                        kept_subset.append(u)
+                                        # log(f"Proxy {h} failed Stage 3, failure count: {streaks[h]['failure_count']}. Keeping it.")
+                                    else:
+                                        log(f"Proxy {h} reached failure limit ({EXISTING_PROXY_FAILURE_LIMIT}). Removing it.")
+                                else:
+                                    # No host info, can't track failures reliably, remove it
+                                    pass
+
+                    # Save updated streaks after revalidation
+                    save_streaks(streaks)
+
                     # Merge: replace subset portion with validated ones
                     alive = kept_subset + alive[len(subset):]
 

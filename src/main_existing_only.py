@@ -13,6 +13,7 @@ from .constants import (
     ENABLE_STAGE3,
     STAGE3_MAX,
     STAGE3_WORKERS,
+    EXISTING_PROXY_FAILURE_LIMIT,
 )
 from .grouping import write_grouped_outputs
 from .io_ops import (
@@ -149,19 +150,42 @@ def main() -> int:
                     subset = alive # [:int(STAGE3_MAX)]
                     kept_subset: List[str] = []
 
-                    def _core_check(u: str) -> Optional[str]:
+                    def _core_check(u: str) -> Tuple[str, bool]:
                         try:
                             res = validate_with_v2ray_core(u, timeout_s=12)
                         except Exception:
-                            return None
-                        return u if res is True else None
+                            return u, False
+                        return u, (res is True)
 
                     workers = int(STAGE3_WORKERS)
                     with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as pool2:
                         print("Start Stage 3 for existing proxies")
-                        for r in progress(pool2.map(_core_check, subset), total=len(subset)):
-                            if r is not None:
-                                kept_subset.append(r)
+                        for u, success in progress(pool2.map(_core_check, subset), total=len(subset)):
+                            h = host_map_existing.get(u)
+                            if success:
+                                kept_subset.append(u)
+                                if h:
+                                    if h not in streaks:
+                                        streaks[h] = {'streak': 0, 'last_test': 0, 'last_success': 0, 'failure_count': 0}
+                                    streaks[h]['failure_count'] = 0
+                            else:
+                                if h:
+                                    if h not in streaks:
+                                        streaks[h] = {'streak': 0, 'last_test': 0, 'last_success': 0, 'failure_count': 0}
+                                    
+                                    curr_fails = streaks[h].get('failure_count', 0)
+                                    streaks[h]['failure_count'] = curr_fails + 1
+                                    
+                                    if streaks[h]['failure_count'] < int(EXISTING_PROXY_FAILURE_LIMIT):
+                                        kept_subset.append(u)
+                                    else:
+                                        log(f"Proxy {h} reached failure limit ({EXISTING_PROXY_FAILURE_LIMIT}). Removing it.")
+                                else:
+                                    pass
+
+                    # Save updated streaks after revalidation
+                    save_streaks(streaks)
+
                     # Merge: replace subset portion with validated ones
                     alive = kept_subset + alive[len(subset):]
 

@@ -158,7 +158,14 @@ def load_streaks() -> Dict[str, Dict[str, int]]:
                     streak = int(obj.get('streak', 0))
                     last_test = int(obj.get('last_test', 0))
                     last_success = int(obj.get('last_success', 0))
-                    cleaned[host] = {'streak': streak, 'last_test': last_test, 'last_success': last_success}
+                    # Support failure_count for existing proxies
+                    failure_count = int(obj.get('failure_count', 0))
+                    cleaned[host] = {
+                        'streak': streak, 
+                        'last_test': last_test, 
+                        'last_success': last_success,
+                        'failure_count': failure_count
+                    }
                 return cleaned
     except Exception:
         pass
