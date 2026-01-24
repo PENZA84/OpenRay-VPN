@@ -2434,6 +2434,30 @@ proxies:
     path: /194.127.193.124=24467
     headers:
       Host: afsbconfessout.qzz.io
+- name: OpenRay Dynamic-11378
+  type: vless
+  server: jc.norino.store
+  port: 2083
+  uuid: ee926335-7a99-4d5f-b61b-3314ec76dce9
+  network: ws
+  tls: true
+  servername: yakh.garletshopino.com
+  ws-opts:
+    path: /path
+    headers:
+      Host: yakh.garletshopino.com
+- name: 'OpenRay Dynamic-11608 #3'
+  type: vless
+  server: chatgpt.com
+  port: 443
+  uuid: 3e2e3c21-3fc8-468f-9ab5-e782bdf5bf97
+  network: ws
+  tls: true
+  servername: l.ayovo.netlib.re
+  ws-opts:
+    path: /?ed=2560
+    headers:
+      Host: l.ayovo.netlib.re
 - name: OpenRay  DE-2971
   type: vless
   server: 188.34.193.153
@@ -3234,6 +3258,18 @@ proxies:
     public-key: cO7hgMDZHkgT-wS-tur_ZmtdEbl9CxtsyJbhIKTkQB4
     short-id: 516e084390dfda
   client-fingerprint: firefox
+- name: OpenRay  DE-3679
+  type: vless
+  server: 80.253.249.4
+  port: 2020
+  uuid: abfee984-e98c-4081-bfcf-71446001d63c
+  network: tcp
+  tls: true
+  servername: yahoo.com
+  reality-opts:
+    public-key: nE2hZn0u63xEpxsPPy-Ey-X7GF8ukrHOMnACtetllSg
+    short-id: acff98
+  client-fingerprint: chrome
 - name: OpenRay  US-2325
   type: vless
   server: 104.17.134.117
@@ -7788,6 +7824,19 @@ proxies:
     public-key: LYcCwo0njLgniLzvwFyn6xcwwQ45CQhUFI-05xEU_Bg
     short-id: e0e9fa537618f9a5
   client-fingerprint: chrome
+- name: OpenRay  RU-1419
+  type: vless
+  server: 84.201.157.100
+  port: 443
+  uuid: 4e1b0b8d-23f4-4f44-a80b-e6ae4b4af71e
+  network: tcp
+  flow: xtls-rprx-vision
+  tls: true
+  servername: api-maps.yandex.ru
+  reality-opts:
+    public-key: dTsRKJN6v03ir1RDMk-DglS9TKiGXRPh1HYbbZXZuUQ
+    short-id: 46761921684ac921
+  client-fingerprint: chrome
 - name: OpenRay  KR-45
   type: vmess
   server: dv4.789900.xyz
@@ -11125,6 +11174,16 @@ proxies:
     public-key: DSF9EhsLMGd7Clgh7PhrY4AmCxIYtCnATRrzA2sVTis
     short-id: abb50e
   client-fingerprint: firefox
+- name: OpenRay  IT-5
+  type: vless
+  server: 91.201.65.220
+  port: 10004
+  uuid: 343cc844-f964-11f0-9840-00163e0951db
+  network: ws
+  ws-opts:
+    path: /vpnjantit
+    headers:
+      Host: 91.201.65.220
 - name: OpenRay  TW-1
   type: vless
   server: tw.miopara.rest
@@ -11661,6 +11720,8 @@ proxy-groups:
   - 'OpenRay Dynamic-11608 #2'
   - 'OpenRay Dynamic-11609 #2'
   - OpenRay Dynamic-11610
+  - OpenRay Dynamic-11378
+  - 'OpenRay Dynamic-11608 #3'
   - OpenRay  DE-2971
   - OpenRay  DE-2975
   - OpenRay  DE-3173
@@ -11728,6 +11789,7 @@ proxy-groups:
   - OpenRay  DE-3675
   - OpenRay  DE-3676
   - OpenRay  DE-3677
+  - OpenRay  DE-3679
   - OpenRay  US-2325
   - OpenRay  US-2737
   - OpenRay  US-2744
@@ -12099,6 +12161,7 @@ proxy-groups:
   - OpenRay  RU-1416
   - OpenRay  RU-1417
   - OpenRay  RU-1418
+  - OpenRay  RU-1419
   - OpenRay  KR-45
   - OpenRay  KR-46
   - OpenRay  KR-47
@@ -12367,6 +12430,7 @@ proxy-groups:
   - OpenRay  IT-2
   - OpenRay  IT-3
   - OpenRay  IT-4
+  - OpenRay  IT-5
   - OpenRay  TW-1
   - OpenRay  BE-1
   - OpenRay  GR-1
@@ -12603,6 +12667,8 @@ proxy-groups:
   - 'OpenRay Dynamic-11608 #2'
   - 'OpenRay Dynamic-11609 #2'
   - OpenRay Dynamic-11610
+  - OpenRay Dynamic-11378
+  - 'OpenRay Dynamic-11608 #3'
   - OpenRay  DE-2971
   - OpenRay  DE-2975
   - OpenRay  DE-3173
@@ -12670,6 +12736,7 @@ proxy-groups:
   - OpenRay  DE-3675
   - OpenRay  DE-3676
   - OpenRay  DE-3677
+  - OpenRay  DE-3679
   - OpenRay  US-2325
   - OpenRay  US-2737
   - OpenRay  US-2744
@@ -13041,6 +13108,7 @@ proxy-groups:
   - OpenRay  RU-1416
   - OpenRay  RU-1417
   - OpenRay  RU-1418
+  - OpenRay  RU-1419
   - OpenRay  KR-45
   - OpenRay  KR-46
   - OpenRay  KR-47
@@ -13309,6 +13377,7 @@ proxy-groups:
   - OpenRay  IT-2
   - OpenRay  IT-3
   - OpenRay  IT-4
+  - OpenRay  IT-5
   - OpenRay  TW-1
   - OpenRay  BE-1
   - OpenRay  GR-1
