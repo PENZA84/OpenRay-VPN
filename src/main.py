@@ -343,9 +343,13 @@ def main() -> int:
     recheck_env = os.environ.get('OPENRAY_RECHECK_EXISTING', '1').strip().lower()
     do_recheck = recheck_env not in ('0', 'false', 'no')
     alive: List[str] = []
+    # Track which proxies successfully passed validation this run
+    successful_this_run: List[str] = []
     host_map_existing: Dict[str, Optional[str]] = {}
     host_success_run: Dict[str, bool] = {}
     if do_recheck and os.path.exists(AVAILABLE_FILE):
+        # Reset successful_this_run if we are doing a recheck, as we will populate it during checking
+        successful_this_run = []
         existing_lines = [ln.strip() for ln in read_lines(AVAILABLE_FILE) if ln.strip()]
         if existing_lines:
             from .parsing import extract_host as _extract_host_for_existing
@@ -366,6 +370,8 @@ def main() -> int:
             # Keep all existing proxies without Stage 2 revalidation
             for u in existing_lines:
                 alive.append(u)
+                if int(ENABLE_STAGE3) != 1:
+                    successful_this_run.append(u)
 
             # Optional Stage 3: validate revalidated existing proxies with V2Ray core (if configured)
             if int(ENABLE_STAGE3) == 1 and alive:
@@ -408,6 +414,7 @@ def main() -> int:
                         for u, success in progress(pool2.map(_core_check_with_retry, subset), total=len(subset)):
                             if success:
                                 kept_subset.append(u)
+                                successful_this_run.append(u)
                                 if u in counts:
                                     counts[u]["consecutive_failures"] = 0
                             else:
@@ -581,7 +588,9 @@ def main() -> int:
             if ok:
                 host_success_run[host] = True
                 available_to_add.append(uri)
-
+                if int(ENABLE_STAGE3) != 1:
+                    successful_this_run.append(uri)
+    
     log(f"Available proxies found this run (ping/connect ok): {len(available_to_add)}")
 
     # Optional Stage 3: validate a subset with V2Ray core (if configured)
@@ -612,6 +621,7 @@ def main() -> int:
                 for r in progress(pool2.map(_core_check_new, subset), total=len(subset)):
                     if r is not None:
                         kept_subset.append(r)
+                        successful_this_run.append(r)
             # Merge: replace subset portion with validated ones
             available_to_add = kept_subset + available_to_add[len(subset):]
 
@@ -724,10 +734,12 @@ def main() -> int:
 
     # Update check counts for successfully validated proxies
     try:
-        # Load current available proxies to update counts
+        if successful_this_run:
+            _update_check_counts_for_proxies(successful_this_run, "main")
+        
+        # Load current available proxies for top100 ranking
         current_available = load_existing_available()
         if current_available:
-            _update_check_counts_for_proxies(list(current_available), "main")
             _write_top100_by_checks(list(current_available))
             
             # Generate Iran top100 ranking (without updating iran counter)
