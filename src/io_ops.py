@@ -19,7 +19,6 @@ DEFAULT_STATE_DIR = os.path.join(REPO_ROOT, '.state')
 DEFAULT_OUTPUT_DIR = os.path.join(REPO_ROOT, 'output')
 DEFAULT_TESTED_FILE = os.path.join(DEFAULT_STATE_DIR, 'tested.txt')
 DEFAULT_AVAILABLE_FILE = os.path.join(DEFAULT_OUTPUT_DIR, 'all_valid_proxies.txt')
-DEFAULT_STREAKS_FILE = os.path.join(DEFAULT_STATE_DIR, 'streaks.json')
 
 def get_state_dir():
     """Get current STATE_DIR, checking for runtime overrides"""
@@ -53,15 +52,6 @@ def get_available_file():
     except (ImportError, AttributeError):
         return DEFAULT_AVAILABLE_FILE
 
-def get_streaks_file():
-    """Get current STREAKS_FILE, checking for runtime overrides"""
-    try:
-        if 'constants' in sys.modules:
-            return sys.modules['constants'].STREAKS_FILE
-        from . import constants as C
-        return C.STREAKS_FILE
-    except (ImportError, AttributeError):
-        return DEFAULT_STREAKS_FILE
 
 def get_tested_file():
     """Get current TESTED_FILE, checking for runtime overrides"""
@@ -141,48 +131,6 @@ def load_existing_available() -> Set[str]:
         if s:
             existing.add(s)
     return existing
-
-
-def load_streaks() -> Dict[str, Dict[str, int]]:
-    try:
-        if not os.path.exists(get_streaks_file()):
-            return {}
-        with open(get_streaks_file(), 'r', encoding='utf-8', errors='ignore') as f:
-            data = json.load(f)
-            if isinstance(data, dict):
-                # Ensure numeric fields are ints
-                cleaned: Dict[str, Dict[str, int]] = {}
-                for host, obj in data.items():
-                    if not isinstance(obj, dict):
-                        continue
-                    streak = int(obj.get('streak', 0))
-                    last_test = int(obj.get('last_test', 0))
-                    last_success = int(obj.get('last_success', 0))
-                    # Support failure_count for existing proxies
-                    failure_count = int(obj.get('failure_count', 0))
-                    cleaned[host] = {
-                        'streak': streak, 
-                        'last_test': last_test, 
-                        'last_success': last_success,
-                        'failure_count': failure_count
-                    }
-                return cleaned
-    except Exception:
-        pass
-    return {}
-
-
-def save_streaks(streaks: Dict[str, Dict[str, int]]) -> None:
-    try:
-        os.makedirs(get_state_dir(), exist_ok=True)
-        streaks_file = get_streaks_file()
-        tmp = streaks_file + '.tmp'
-        with open(tmp, 'w', encoding='utf-8', errors='ignore') as f:
-            json.dump(streaks, f, ensure_ascii=False)
-        os.replace(tmp, streaks_file)
-    except Exception:
-        # best-effort; ignore
-        pass
 
 
 # Optimized tested hashes storage using binary format

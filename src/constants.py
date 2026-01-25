@@ -14,7 +14,6 @@ STATE_DIR = os.path.join(REPO_ROOT, '.state')
 OUTPUT_DIR = os.path.join(REPO_ROOT, 'output')
 TESTED_FILE = os.path.join(STATE_DIR, 'tested.txt')  # stores SHA1 per tested proxy URI
 AVAILABLE_FILE = os.path.join(OUTPUT_DIR, 'all_valid_proxies.txt')
-STREAKS_FILE = os.path.join(STATE_DIR, 'streaks.json')
 KIND_DIR = os.path.join(OUTPUT_DIR, 'kind')
 COUNTRY_DIR = os.path.join(OUTPUT_DIR, 'country')
 

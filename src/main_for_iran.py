@@ -25,7 +25,6 @@ C.OUTPUT_DIR = os.path.join(C.REPO_ROOT, 'output_iran')
 # Recompute dependent constant paths
 C.TESTED_FILE = os.path.join(C.STATE_DIR, 'tested.txt')
 C.AVAILABLE_FILE = os.path.join(C.OUTPUT_DIR, 'all_valid_proxies_for_iran.txt')
-C.STREAKS_FILE = os.path.join(C.STATE_DIR, 'streaks.json')
 C.KIND_DIR = os.path.join(C.OUTPUT_DIR, 'kind')
 C.COUNTRY_DIR = os.path.join(C.OUTPUT_DIR, 'country')
 
@@ -268,26 +267,26 @@ def _seed_available_from_input() -> None:
         log(f"Seeding available proxies failed: {e}")
 
 def _load_check_counts() -> Dict[str, Dict[str, int]]:
-    """Load check counts with dual counter system: {proxy: {"main": count, "iran": count}}"""
+    """Load check counts with dual counter system: {proxy: {"main": count, "iran": count, "consecutive_failures": count}}"""
     try:
         if os.path.exists(CHECK_COUNTS_FILE):
             with open(CHECK_COUNTS_FILE, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 if isinstance(data, dict):
-                    # Convert old format to new format if needed
                     result = {}
                     for proxy, value in data.items():
-                        if isinstance(value, dict) and "main" in value and "iran" in value:
-                            # New format
+                        if isinstance(value, dict):
                             result[str(proxy)] = {
                                 "main": int(value.get("main", 0)),
-                                "iran": int(value.get("iran", 0))
+                                "iran": int(value.get("iran", 0)),
+                                "consecutive_failures": int(value.get("consecutive_failures", 0))
                             }
                         else:
                             # Old format - convert to new format
                             result[str(proxy)] = {
                                 "main": int(value) if isinstance(value, (int, str)) else 0,
-                                "iran": 0
+                                "iran": 0,
+                                "consecutive_failures": 0
                             }
                     return result
     except Exception as e:
@@ -356,10 +355,11 @@ def _update_check_counts_for_proxies(proxies: List[str], active_proxies: List[st
     updated_count = 0
     for p in unique_proxies:
         if p not in counts:
-            counts[p] = {"main": 0, "iran": 0}
+            counts[p] = {"main": 0, "iran": 0, "consecutive_failures": 0}
         
         old_count = counts[p].get(counter_type, 0)
         counts[p][counter_type] = old_count + 1
+        counts[p]["consecutive_failures"] = 0  # Reset consecutive failures on success
         updated_count += 1
     
     if updated_count > 0:
@@ -454,6 +454,9 @@ def _validate_proxies_directly(proxies: List[str]) -> List[str]:
             except Exception:
                 pass
 
+    # Load check counts for tracking consecutive failures
+    counts = _load_check_counts()
+
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         future_to_proxy = {executor.submit(net_module.validate_with_v2ray_core, proxy, 12): proxy for proxy in proxies if proxy}
         for future in as_completed(future_to_proxy):
@@ -463,9 +466,25 @@ def _validate_proxies_directly(proxies: List[str]) -> List[str]:
                 ok = bool(future.result())
             except Exception:
                 ok = False
+            
             if ok:
                 successful_proxies.append(proxy)
+                if proxy in counts:
+                    counts[proxy]["consecutive_failures"] = 0
+            else:
+                if proxy not in counts:
+                    counts[proxy] = {"main": 0, "iran": 0, "consecutive_failures": 0}
+                counts[proxy]["consecutive_failures"] += 1
+                
+                # We don't remove proxies here because main_for_iran.py is read-only for available proxies
+                # and only updates check_counts.json. But we could log it.
+                if counts[proxy]["consecutive_failures"] >= int(getattr(C, 'EXISTING_PROXY_FAILURE_LIMIT', 24)):
+                    log(f"Proxy {proxy[:50]}... reached failure limit ({counts[proxy]['consecutive_failures']}) in Iran.")
+
             _update_progress(1)
+
+    # Save updated check counts
+    _save_check_counts(counts)
 
     if progress is not None:
         try:

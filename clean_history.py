@@ -7,7 +7,7 @@ from typing import Set
 
 # Import from src package
 import src.constants as C
-from src.io_ops import read_lines, load_streaks, save_streaks
+from src.io_ops import read_lines
 from src.parsing import extract_host
 
 def main():
@@ -21,33 +21,7 @@ def main():
     current_proxies = set(read_lines(C.AVAILABLE_FILE))
     print(f"Found {len(current_proxies)} current valid proxies.")
     
-    current_hosts = set()
-    for p in current_proxies:
-        host = extract_host(p)
-        if host:
-            current_hosts.add(host)
-    print(f"Found {len(current_hosts)} unique hosts from current proxies.")
-
-    # 1. Clean streaks.json
-    if os.path.exists(C.STREAKS_FILE):
-        print(f"Cleaning {C.STREAKS_FILE}...")
-        try:
-            with open(C.STREAKS_FILE, 'r', encoding='utf-8') as f:
-                streaks = json.load(f)
-            
-            old_count = len(streaks)
-            # Filter streaks: keep if host is in current_hosts
-            filtered_streaks = {k: v for k, v in streaks.items() if k in current_hosts}
-            new_count = len(filtered_streaks)
-            
-            with open(C.STREAKS_FILE, 'w', encoding='utf-8') as f:
-                json.dump(filtered_streaks, f)
-            
-            print(f"  Streaks: {old_count} -> {new_count} entries (Removed {old_count - new_count})")
-        except Exception as e:
-            print(f"  Error cleaning streaks: {e}")
-
-    # 2. Clean check_counts.json
+    # 1. Clean check_counts.json
     CHECK_COUNTS_FILE = os.path.join(C.STATE_DIR, 'check_counts.json')
     if os.path.exists(CHECK_COUNTS_FILE):
         print(f"Cleaning {CHECK_COUNTS_FILE}...")

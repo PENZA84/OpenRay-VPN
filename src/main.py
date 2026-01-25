@@ -30,12 +30,10 @@ from .io_ops import (
     append_lines,
     ensure_dirs,
     load_existing_available,
-    load_streaks,
     load_tested_hashes,
     load_tested_hashes_optimized,
     append_tested_hashes_optimized,
     read_lines,
-    save_streaks,
     write_text_file_atomic,
 )
 from .net import _get_country_code_for_host, ping_host, connect_host_port, quick_protocol_probe, validate_with_v2ray_core, fetch_urls_async_batch, get_country_codes_batch, check_one_sync, is_dynamic_host, check_pair
@@ -89,26 +87,26 @@ TOP100_FILE = os.path.join(os.path.dirname(AVAILABLE_FILE), 'main_top100_checked
 
 
 def _load_check_counts() -> Dict[str, Dict[str, int]]:
-    """Load check counts with dual counter system: {proxy: {"main": count, "iran": count}}"""
+    """Load check counts with dual counter system: {proxy: {"main": count, "iran": count, "consecutive_failures": count}}"""
     try:
         if os.path.exists(CHECK_COUNTS_FILE):
             with open(CHECK_COUNTS_FILE, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 if isinstance(data, dict):
-                    # Convert old format to new format if needed
                     result = {}
                     for proxy, value in data.items():
-                        if isinstance(value, dict) and "main" in value and "iran" in value:
-                            # New format
+                        if isinstance(value, dict):
                             result[str(proxy)] = {
                                 "main": int(value.get("main", 0)),
-                                "iran": int(value.get("iran", 0))
+                                "iran": int(value.get("iran", 0)),
+                                "consecutive_failures": int(value.get("consecutive_failures", 0))
                             }
                         else:
                             # Old format - convert to new format
                             result[str(proxy)] = {
                                 "main": int(value) if isinstance(value, (int, str)) else 0,
-                                "iran": 0
+                                "iran": 0,
+                                "consecutive_failures": 0
                             }
                     return result
     except Exception as e:
@@ -152,10 +150,11 @@ def _update_check_counts_for_proxies(proxies: List[str], counter_type: str = "ma
     updated_count = 0
     for p in unique_proxies:
         if p not in counts:
-            counts[p] = {"main": 0, "iran": 0}
+            counts[p] = {"main": 0, "iran": 0, "consecutive_failures": 0}
         
         old_count = counts[p].get(counter_type, 0)
         counts[p][counter_type] = old_count + 1
+        counts[p]["consecutive_failures"] = 0  # Reset consecutive failures on success
         updated_count += 1
     
     if updated_count > 0:
@@ -199,7 +198,7 @@ def _sync_check_counts_with_available_file() -> None:
         # Add entries for new proxies (with 0 counts)
         for proxy in current_proxies:
             if proxy not in counts:
-                counts[proxy] = {"main": 0, "iran": 0}
+                counts[proxy] = {"main": 0, "iran": 0, "consecutive_failures": 0}
                 added_count += 1
         
         # Save if there were changes
@@ -211,31 +210,6 @@ def _sync_check_counts_with_available_file() -> None:
                 log(f"➕ Added {added_count} new proxy entries to check_counts.json")
     except Exception as e:
         log(f"⚠️ Failed to sync check_counts.json with all_valid_proxies.txt: {e}")
-
-
-def _cleanup_streaks(streaks: Dict[str, dict], current_proxies: List[str]) -> Dict[str, dict]:
-    """Remove streaks for hosts that are no longer in the current available proxies list."""
-    try:
-        current_hosts = set()
-        for u in current_proxies:
-            host = extract_host(u)
-            if host:
-                current_hosts.add(host)
-        
-        if not current_hosts:
-            return streaks
-            
-        old_count = len(streaks)
-        filtered_streaks = {h: r for h, r in streaks.items() if h in current_hosts}
-        new_count = len(filtered_streaks)
-        
-        if old_count != new_count:
-            log(f"🧹 Cleaned up streaks.json: {old_count} -> {new_count} hosts (Removed {old_count - new_count})")
-            
-        return filtered_streaks
-    except Exception as e:
-        log(f"⚠️ Failed to cleanup streaks: {e}")
-        return streaks
 
 
 def _write_top100_by_checks(active_proxies: List[str]) -> None:
@@ -356,11 +330,16 @@ def main() -> int:
         log("No Internet connectivity detected; skipping network operations and leaving existing outputs unchanged.")
         return 2
 
-    # Load streaks persistence
-    streaks: Dict[str, Dict[str, int]] = load_streaks()
+    # Remove streaks.json if it still exists
+    try:
+        streaks_file = os.path.join(STATE_DIR, 'streaks.json')
+        if os.path.exists(streaks_file):
+            os.remove(streaks_file)
+            log("🧹 Removed legacy streaks.json file")
+    except Exception:
+        pass
 
     # Optionally re-validate current available proxies to drop broken ones
-    host_success_run: Dict[str, bool] = {}
     recheck_env = os.environ.get('OPENRAY_RECHECK_EXISTING', '1').strip().lower()
     do_recheck = recheck_env not in ('0', 'false', 'no')
     alive: List[str] = []
@@ -383,83 +362,9 @@ def main() -> int:
             existing_lines = deduplicated_existing
 
             host_map_existing = {u: _extract_host_for_existing(u) for u in existing_lines}
-            items = [(u, h) for u, h in host_map_existing.items() if h]
-            # initialize to False for tested hosts
-            for _, h in items:
-                if h not in host_success_run:
-                    host_success_run[h] = False
-
-            def check_existing(item: Tuple[str, str]) -> Optional[str]:
-                u, h = item
-
-                def _check_proxy_operation():
-                    try:
-                        # Step 1: Fast ICMP/TCP fallback check (speed boost)
-                        ping_ok = ping_host(h)
-                        
-                        scheme = u.split('://', 1)[0].lower()
-                        if scheme in ('vmess', 'vless', 'trojan', 'ss', 'ssr'):
-                            p = extract_port(u)
-                            if p is not None:
-                                # Step 2: Specific port check (hard gate)
-                                # We try this even if ping_host failed, because some hosts block ICMP/fallback ports.
-                                ok = connect_host_port(h, int(p))
-                                if not ok:
-                                    return None
-                                
-                                # Step 3: Optional protocol probe
-                                if int(ENABLE_STAGE2) == 1:
-                                    return u if quick_protocol_probe(u, h, int(p)) else None
-                                return u
-                        
-                        # If not a recognized TCP scheme or port extraction failed, fallback to ping result
-                        return u if ping_ok else None
-                    except Exception as e:
-                        # Log any exceptions that occur
-                        print(f"Warning: Exception checking proxy {h}: {e}", flush=True)
-                        return None
-
-                # Use timeout wrapper with hard 10-second limit per proxy
-                import threading
-                result = [None]
-                exception = [None]
-
-                def target():
-                    try:
-                        result[0] = _check_proxy_operation()
-                    except Exception as e:
-                        exception[0] = e
-
-                thread = threading.Thread(target=target, daemon=True)
-                thread.start()
-                thread.join(10.0)  # Hard 10-second timeout per proxy
-
-                if thread.is_alive():
-                    print(f"Warning: Proxy {h} timed out after 10 seconds", flush=True)
-                    return None
-
-                if exception[0]:
-                    raise exception[0]
-
-                return result[0]
-
-
-            # # Skip Stage 2 for existing proxies - keep all existing proxies without revalidation
-            # with concurrent.futures.ThreadPoolExecutor(max_workers=PING_WORKERS) as pool:
-            #     print("Start Stage 2 for existing proxies")
-            #     for res in progress(pool.map(check_existing, items), total=len(items)):
-            #         if res is not None:
-            #             alive.append(res)
-            #             h = host_map_existing.get(res)
-            #             if h:
-            #                 host_success_run[h] = True
-            
             # Keep all existing proxies without Stage 2 revalidation
             for u in existing_lines:
                 alive.append(u)
-                h = host_map_existing.get(u)
-                if h:
-                    host_success_run[h] = True
 
             # Optional Stage 3: validate revalidated existing proxies with V2Ray core (if configured)
             if int(ENABLE_STAGE3) == 1 and alive:
@@ -474,6 +379,9 @@ def main() -> int:
                 else:
                     subset = alive # [:int(STAGE3_MAX)]
                     kept_subset: List[str] = []
+                    
+                    # Load check counts for tracking consecutive failures
+                    counts = _load_check_counts()
 
                     def _core_check_with_retry(u: str) -> Tuple[str, bool]:
                         # For existing proxies, we are more lenient and try up to 5 times
@@ -497,33 +405,25 @@ def main() -> int:
                     with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as pool2:
                         print("Start Stage 3 (with retries) for existing proxies")
                         for u, success in progress(pool2.map(_core_check_with_retry, subset), total=len(subset)):
-                            h = host_map_existing.get(u)
                             if success:
                                 kept_subset.append(u)
-                                if h:
-                                    if h not in streaks:
-                                        streaks[h] = {'streak': 0, 'last_test': 0, 'last_success': 0, 'failure_count': 0}
-                                    streaks[h]['failure_count'] = 0
+                                if u in counts:
+                                    counts[u]["consecutive_failures"] = 0
                             else:
-                                if h:
-                                    if h not in streaks:
-                                        streaks[h] = {'streak': 0, 'last_test': 0, 'last_success': 0, 'failure_count': 0}
-                                    
-                                    # Ensure failure_count exists
-                                    curr_fails = streaks[h].get('failure_count', 0)
-                                    streaks[h]['failure_count'] = curr_fails + 1
-                                    
-                                    if streaks[h]['failure_count'] < int(EXISTING_PROXY_FAILURE_LIMIT):
-                                        kept_subset.append(u)
-                                        # log(f"Proxy {h} failed Stage 3, failure count: {streaks[h]['failure_count']}. Keeping it.")
-                                    else:
-                                        log(f"Proxy {h} reached failure limit ({EXISTING_PROXY_FAILURE_LIMIT}). Removing it.")
+                                if u not in counts:
+                                    counts[u] = {"main": 0, "iran": 0, "consecutive_failures": 0}
+                                
+                                counts[u]["consecutive_failures"] += 1
+                                
+                                if counts[u]["consecutive_failures"] < int(EXISTING_PROXY_FAILURE_LIMIT):
+                                    kept_subset.append(u)
                                 else:
-                                    # No host info, can't track failures reliably, remove it
-                                    pass
+                                    log(f"Proxy {u[:50]}... reached failure limit ({EXISTING_PROXY_FAILURE_LIMIT}). Removing it.")
+                                    # Entry will be removed from counts later during sync or we can keep it with high failure count
+                                    # but for now, we just don't add it to kept_subset
 
-                    # Save updated streaks after revalidation
-                    save_streaks(streaks)
+                    # Save updated check counts after revalidation
+                    _save_check_counts(counts)
 
                     # Merge: replace subset portion with validated ones
                     alive = kept_subset + alive[len(subset):]
@@ -821,42 +721,16 @@ def main() -> int:
     append_tested_hashes_optimized(new_hashes)
     log(f"Recorded {len(new_hashes)} newly tested proxies to optimized storage")
 
-    # Update streaks based on this run's host successes
-    try:
-        total_successes = sum(1 for v in host_success_run.values() if v)
-        if total_successes == 0 and not _has_connectivity():
-            log("Suspected Internet outage affected tests; skipping streaks update to avoid false resets.")
-        else:
-            now_ts = int(time.time())
-            for host, success in host_success_run.items():
-                rec = streaks.get(host, {'streak': 0, 'last_test': 0, 'last_success': 0})
-                rec['last_test'] = now_ts
-                if success:
-                    rec['streak'] = int(rec.get('streak', 0)) + 1
-                    rec['last_success'] = now_ts
-                else:
-                    rec['streak'] = 0
-                streaks[host] = rec
-            
-            # Filter streaks to only keep hosts that are in the final available list
-            # This prevents streaks.json from growing indefinitely with expired proxies.
-            current_available = [ln.strip() for ln in read_lines(AVAILABLE_FILE) if ln.strip()]
-            streaks = _cleanup_streaks(streaks, current_available)
-            
-            save_streaks(streaks)
-    except Exception as e:
-        log(f"Streaks update failed: {e}")
-
     # Update check counts for successfully validated proxies
     try:
         # Load current available proxies to update counts
         current_available = load_existing_available()
         if current_available:
-            _update_check_counts_for_proxies(current_available, "main")
-            _write_top100_by_checks(current_available)
+            _update_check_counts_for_proxies(list(current_available), "main")
+            _write_top100_by_checks(list(current_available))
             
             # Generate Iran top100 ranking (without updating iran counter)
-            _write_iran_top100_by_checks(current_available)
+            _write_iran_top100_by_checks(list(current_available))
     except Exception as e:
         log(f"Check counts update failed: {e}")
 
