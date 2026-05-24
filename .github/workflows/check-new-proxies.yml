@@ -22,12 +22,13 @@ jobs:
       contents: write
 
     steps:
-    # Checkout repository with full history
+    # Checkout repository with full history and credentials enabled
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
+        ref: main
         fetch-depth: 1
-        persist-credentials: false
+        persist-credentials: true  # Включаем сохранение прав авторизации
 
     - name: Configure Git user
       run: |
@@ -87,8 +88,8 @@ jobs:
         # Ensure no local changes block pull
         git stash --include-untracked
 
-        # Pull latest changes from main without rebase
-        git pull origin main --no-rebase
+        # Pull latest changes from main with rebase to prevent conflicts
+        git pull origin main --rebase -X theirs
 
         # Apply local changes back
         git stash pop || true
@@ -97,5 +98,5 @@ jobs:
         git add .state/ output/
         git commit -m "Update new proxy lists [skip ci]" || echo "No changes to commit"
 
-        # Push changes
-        git push https://x-access-token:${{ secrets.PERSONAL_TOKEN }}@github.com/${{ github.repository }}.git main
+        # Штатный пуш без сторонних секретов через системный токен среды
+        git push origin main
