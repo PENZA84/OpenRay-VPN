@@ -9877,6 +9877,19 @@ proxies:
     public-key: cZsRvk8pr8wfYiX1CNxdDjR38tow3HuL6IpBj8P82l8
     short-id: e18eda8458cab0d7
   client-fingerprint: qq
+- name: OpenRay Dynamic-314
+  type: vless
+  server: pl.riotvpn.eu
+  port: 443
+  uuid: 5f00b5f5-75f6-4a24-923c-2f561441b03c
+  network: tcp
+  flow: xtls-rprx-vision
+  tls: true
+  servername: ads.x5.ru
+  reality-opts:
+    public-key: 8h8t5eBWL9oERK7xWHQLFJE5j6sZdgNDQAs3EGnNbho
+    short-id: b76dcf9e1183fe1b
+  client-fingerprint: chrome
 - name: OpenRay  DE-2971
   type: vless
   server: 188.34.193.153
@@ -19348,6 +19361,14 @@ proxies:
     public-key: BrGL0gTKK_Ir2VwJOa91Vd8870DswnOXhA6-F92RBGI
     short-id: a987b6bd1781daa3
   client-fingerprint: chrome
+- name: OpenRay  US-12230
+  type: vmess
+  server: 23.226.135.232
+  port: 55310
+  uuid: 22066968-ef90-455e-b981-4bf782d25386
+  alterId: 0
+  cipher: auto
+  network: tcp
 - name: OpenRay  NL-4
   type: vless
   server: 51.158.206.96
@@ -28768,6 +28789,30 @@ proxies:
     public-key: A3NXnUIT-W0m1Y_leRnv5so2IeCvk9FCFgL31PulfTw
     short-id: 628b3c90c98ead4f
   client-fingerprint: chrome
+- name: OpenRay  KR-132
+  type: vless
+  server: 45.82.246.235
+  port: 2053
+  uuid: 26524cce-d514-4014-a426-365fb266a14d
+  network: ws
+  tls: true
+  servername: c1mxc.api-gateway.fgfw.qzz.io
+  ws-opts:
+    path: /danfeng-2cm3?ed=2560fp=firefox
+    headers:
+      Host: c1mxc.api-gateway.fgfw.qzz.io
+- name: OpenRay  KR-133
+  type: vless
+  server: 54.180.88.155
+  port: 8686
+  uuid: 1a17b19d-4896-4531-af79-6e91d8ef8228
+  network: tcp
+  tls: true
+  servername: www.apple.com
+  reality-opts:
+    public-key: A3NXnUIT-W0m1Y_leRnv5so2IeCvk9FCFgL31PulfTw
+    short-id: 628b3c90c98ead4f
+  client-fingerprint: chrome
 - name: OpenRay  JP-343
   type: vmess
   server: n1753598445.74qxv.top
@@ -34788,6 +34833,18 @@ proxies:
 - name: OpenRay  SG-125
   type: vless
   server: 18.140.97.93
+  port: 8686
+  uuid: 1a17b19d-4896-4531-af79-6e91d8ef8228
+  network: tcp
+  tls: true
+  servername: www.apple.com
+  reality-opts:
+    public-key: A3NXnUIT-W0m1Y_leRnv5so2IeCvk9FCFgL31PulfTw
+    short-id: 628b3c90c98ead4f
+  client-fingerprint: chrome
+- name: OpenRay  SG-126
+  type: vless
+  server: 13.251.103.215
   port: 8686
   uuid: 1a17b19d-4896-4531-af79-6e91d8ef8228
   network: tcp
@@ -42525,6 +42582,7 @@ proxy-groups:
   - 'OpenRay Dynamic-7 #2'
   - OpenRay Dynamic-12411
   - OpenRay Dynamic-905
+  - OpenRay Dynamic-314
   - OpenRay  DE-2971
   - OpenRay  DE-2975
   - OpenRay  DE-3173
@@ -43418,6 +43476,7 @@ proxy-groups:
   - OpenRay  US-12225
   - OpenRay  US-12226
   - OpenRay  US-12229
+  - OpenRay  US-12230
   - OpenRay  NL-4
   - OpenRay  NL-6
   - OpenRay  NL-7
@@ -44179,6 +44238,8 @@ proxy-groups:
   - OpenRay  KR-129
   - OpenRay  KR-130
   - OpenRay  KR-131
+  - OpenRay  KR-132
+  - OpenRay  KR-133
   - OpenRay  JP-343
   - OpenRay  JP-390
   - OpenRay  JP-422
@@ -44695,6 +44756,7 @@ proxy-groups:
   - OpenRay  SG-123
   - OpenRay  SG-124
   - OpenRay  SG-125
+  - OpenRay  SG-126
   - OpenRay  BR-12
   - OpenRay  BR-14
   - OpenRay  BR-16
@@ -46141,6 +46203,7 @@ proxy-groups:
   - 'OpenRay Dynamic-7 #2'
   - OpenRay Dynamic-12411
   - OpenRay Dynamic-905
+  - OpenRay Dynamic-314
   - OpenRay  DE-2971
   - OpenRay  DE-2975
   - OpenRay  DE-3173
@@ -47034,6 +47097,7 @@ proxy-groups:
   - OpenRay  US-12225
   - OpenRay  US-12226
   - OpenRay  US-12229
+  - OpenRay  US-12230
   - OpenRay  NL-4
   - OpenRay  NL-6
   - OpenRay  NL-7
@@ -47795,6 +47859,8 @@ proxy-groups:
   - OpenRay  KR-129
   - OpenRay  KR-130
   - OpenRay  KR-131
+  - OpenRay  KR-132
+  - OpenRay  KR-133
   - OpenRay  JP-343
   - OpenRay  JP-390
   - OpenRay  JP-422
@@ -48311,6 +48377,7 @@ proxy-groups:
   - OpenRay  SG-123
   - OpenRay  SG-124
   - OpenRay  SG-125
+  - OpenRay  SG-126
   - OpenRay  BR-12
   - OpenRay  BR-14
   - OpenRay  BR-16
